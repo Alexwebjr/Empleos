@@ -1,5 +1,10 @@
 import { AppRouter } from './router/AppRouter';
+import { AppTheme } from './theme';
 
 export const App = () => {
-  return <AppRouter />;
+  return (
+    <AppTheme>
+      <AppRouter />
+    </AppTheme>
+  );
 };

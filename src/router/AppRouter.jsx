@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import { AuthRoutes } from '../modules/auth/routes/AuthRoutes';
-import { JodRoutes } from '../modules/jods/routes/JodRoutes';
+import { JobRoutes } from '../modules/jobs/routes/JobRoutes';
 //import { AdminRoutes } from '../modules/admin/routes/';
 
 export const AppRouter = () => {
@@ -13,7 +13,7 @@ export const AppRouter = () => {
       <Route path="/admin/*" element={<AdminRoutes />} />
 */}
       {/* Jod */}
-      <Route path="/*" element={<JodRoutes />} />
+      <Route path="/*" element={<JobRoutes />} />
     </Routes>
   );
 };
