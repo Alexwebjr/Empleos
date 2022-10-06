@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Drawer, List, Toolbar, Divider } from '@mui/material';
+import { Drawer, Box, List, Toolbar, Divider } from '@mui/material';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -9,7 +9,7 @@ import MailIcon from '@mui/icons-material/Mail';
 
 const drawerWidth = 400;
 
-export const SideBar = () => {
+export const SideBar = ({ children }) => {
   return (
     <Drawer
       variant="permanent"
@@ -20,33 +20,7 @@ export const SideBar = () => {
       }}
     >
       <Toolbar />
-      <Box sx={{ overflow: 'auto' }}>
-        <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      </Box>
+      {children}
     </Drawer>
   );
 };
