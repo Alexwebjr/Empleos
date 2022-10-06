@@ -19,7 +19,12 @@ import WifiProtectedSetupIcon from '@mui/icons-material/WifiProtectedSetup';
 
 export const Filter = () => {
   return (
-    <Grid container justifyContent="space-between" height={'100%'}>
+    <Grid
+      container
+      justifyContent="space-between"
+      height={'100%'}
+      overflow="hidden"
+    >
       {/* SEARCH */}
       <Grid item sm={12}>
         <Paper
@@ -44,14 +49,14 @@ export const Filter = () => {
 
       {/* Buttons */}
       <Grid item sm={12}>
-        <Grid container sx={{ pt: 1 }} justifyContent="center">
-          <Grid item sm={12} md={4} textAlign="center">
+        <Grid container justifyContent="center">
+          <Grid item sm={4} textAlign="center">
             <PaidIcon color="disabled" sx={{ fontSize: 40 }} />
           </Grid>
-          <Grid item sm={12} md={4} textAlign="center">
+          <Grid item sm={4} textAlign="center">
             <CalendarMonthIcon color="success" sx={{ fontSize: 40 }} />
           </Grid>
-          <Grid item sm={12} md={4} textAlign="center">
+          <Grid item sm={4} textAlign="center">
             <WifiProtectedSetupIcon color="disabled" sx={{ fontSize: 40 }} />
           </Grid>
         </Grid>

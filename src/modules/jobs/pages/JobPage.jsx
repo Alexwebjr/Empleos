@@ -1,10 +1,10 @@
 import { JobLayout } from '../layout/JobLayout';
-import { NothingSelectedView } from '../views/NothingSelectedView';
+import { JobView } from '../views';
 
 export const JobPage = () => {
   return (
     <JobLayout>
-      <NothingSelectedView />
+      <JobView />
     </JobLayout>
   );
 };
