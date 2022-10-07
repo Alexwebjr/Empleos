@@ -1,6 +1,6 @@
 import { Grid, Typography } from '@mui/material';
 
-export const NothingSelectedView = () => {
+export const Default = () => {
   return (
     <Grid
       container

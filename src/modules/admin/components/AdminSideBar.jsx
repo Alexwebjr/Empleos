@@ -8,10 +8,11 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 
 export const AdminSideBar = () => {
+  const maintenances = [{ Empleos: 'icon' }];
   return (
     <Box sx={{ overflow: 'auto' }}>
       <List>
-        {['Empleos', 'Usuarios', 'Anuncios', 'Help'].map((text, index) => (
+        {['Empleos', 'Usuarios', 'Anuncios'].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton>
               <ListItemIcon>
@@ -24,7 +25,7 @@ export const AdminSideBar = () => {
       </List>
       <Divider />
       <List>
-        {['Ayuda', 'Contacto', 'Spam'].map((text, index) => (
+        {['Ayuda', 'Soporte', 'Contacto'].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton>
               <ListItemIcon>

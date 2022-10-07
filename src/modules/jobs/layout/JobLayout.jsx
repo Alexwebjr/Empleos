@@ -11,7 +11,7 @@ export const JobLayout = ({ children }) => {
     <Box sx={{ display: 'flex' }}>
       <NavBar />
 
-      {/**SideBar / Filter */}
+      {/*SideBar / Filter */}
       <SideBar>
         <Filter />
       </SideBar>

@@ -1,10 +1,11 @@
 import { JobLayout } from '../layout/JobLayout';
-import { JobView } from '../views';
+import { JobView, Default } from '../views';
 
 export const JobPage = () => {
   return (
     <JobLayout>
       <JobView />
+      {/* <Default /> */}
     </JobLayout>
   );
 };
