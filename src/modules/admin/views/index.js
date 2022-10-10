@@ -1,2 +1,2 @@
 export * from './Default';
-export * from './Crud';
+export * from './UserCrud';
