@@ -83,7 +83,18 @@ export const JobView = () => {
               consectetur, neque doloribus, cupiditate numquam dignissimos
               laborum fugiat deleniti? Eum quasi quidem quibusdam.
             </Typography>
-
+            {/*ADS 2 */}
+            <Grid item sm={12} minWidth="100%" padding={1}>
+              <Image
+                src="https://palmares.lemondeduchiffre.fr/images/joomlart/demo/default.jpg"
+                height="15vh"
+                width="90%"
+                fit="cover"
+                duration={300}
+                easing="ease-in-out"
+                alt="Job Image cover"
+              />
+            </Grid>
             {/*SIGN */}
             <List
               sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
@@ -106,6 +117,14 @@ export const JobView = () => {
           </Grid>
 
           <Grid item sm={12} md={4} textAlign="center">
+            {/*ADS 2 */}
+            <Image
+              src="https://palmares.lemondeduchiffre.fr/images/joomlart/demo/default.jpg"
+              height="15vh"
+              width="275px"
+              fit="cover"
+              alt="Job Image cover"
+            />
             {/*REQUERIMENT */}
             <Box sx={{ maxWidth: 275, margin: 'auto' }}>
               <Card variant="outlined">
