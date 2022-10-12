@@ -4,11 +4,15 @@ require('dotenv').config();
 //importing
 const AppError = require('./helpers/appError');
 const userRouter = require('./routes/userRouter');
+const jobRouter = require('./routes/jobRouter');
+const adRouter = require('./routes/adRouter');
 
 const app = express();
 
 //=========== ROUTES ===========
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/jobs', jobRouter);
+app.use('/api/v1/ads', adRouter);
 
 app.get('/', (req, res) => {
   res.send('Server');
