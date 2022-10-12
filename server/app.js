@@ -28,6 +28,7 @@ app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 
+//=========== DB ===========
 app.listen(process.env.DEV_PORT, () => {
   console.log(`App runing http://localhost:${process.env.DEV_PORT}`);
 });
