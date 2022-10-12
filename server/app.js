@@ -1,5 +1,6 @@
 const express = require('express');
 require('dotenv').config();
+const cookieParser = require('cookie-parser');
 
 //importing
 const AppError = require('./helpers/appError');
@@ -11,6 +12,7 @@ const app = express();
 //=========== PARSER ===========
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+app.use(cookieParser());
 
 //=========== ROUTES ===========
 app.use('/api/v1/users', userRouter);
