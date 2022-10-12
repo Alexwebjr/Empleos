@@ -8,6 +8,9 @@ const jobRouter = require('./routes/jobRouter');
 const adRouter = require('./routes/adRouter');
 
 const app = express();
+//=========== PARSER ===========
+app.use(express.json({ limit: '10kb' }));
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
 //=========== ROUTES ===========
 app.use('/api/v1/users', userRouter);
