@@ -1,5 +1,4 @@
-//const Job = require(); //model
-const Job = '';
+const Job = require('../models/Job'); //model
 const crudHelper = require('../controllers/crudController');
 
 //======= FUNCTION API =======

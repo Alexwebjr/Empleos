@@ -1,5 +1,4 @@
-//const Ad = require(); //model
-const Ad = '';
+const Ad = require('../models/Ad'); //model
 
 const crudHelper = require('../controllers/crudController');
 

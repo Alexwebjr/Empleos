@@ -1,5 +1,4 @@
-//const User = require(); //model
-const User = '';
+const User = require('../models/User'); //model
 const crudHelper = require('../controllers/crudController');
 
 //======= FUNCTION API =======
