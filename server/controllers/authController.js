@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const AppError = require('../helpers/appError');
 const catchAsync = require('../helpers/catchAsync');
+const sendEmail = require('../helpers/email');
 
 //======== TOKEN ========
 //Generate Token
@@ -19,8 +20,8 @@ const signToken = id =>
 const correctPassword = async (userPassword, password) =>
   await bcrypt.compare(userPassword, password);
 
-//CreateSendToken
-const CreateSendToken = (user, statusCode, res) => {
+//createSendToken
+const createSendToken = (user, statusCode, res) => {
   const token = signToken(user.id);
 
   const cookieOptions = {
@@ -51,7 +52,7 @@ const CreateSendToken = (user, statusCode, res) => {
 exports.signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create(req.body);
 
-  CreateSendToken(newUser, 201, res);
+  createSendToken(newUser, 201, res);
 });
 
 //LOGIN
@@ -70,7 +71,7 @@ exports.login = catchAsync(async (req, res, next) => {
   }
 
   //3.Send token
-  CreateSendToken(user, 200, res);
+  createSendToken(user, 200, res);
 });
 
 //PROTECT
@@ -171,7 +172,6 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   passwordConfirm to: ${resetURL}.\nIf you didn't forget your password, please ignore this email!`;
 
   try {
-    //TODO:
     await sendEmail({
       email: user.email,
       subject: 'Your password reset token (valid for 10 min)',
@@ -220,7 +220,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   const newUser = await user.save();
 
   //4. Log new User and create jwt
-  CreateSendToken(newUser, 200, res);
+  createSendToken(newUser, 200, res);
 });
 
 //UPDATE_PASSWORD
@@ -239,5 +239,5 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   const newUser = await user.save();
 
   //4. Log new User and create jwt
-  CreateSendToken(newUser, 200, res);
+  createSendToken(newUser, 200, res);
 });
