@@ -73,4 +73,5 @@ sequelize
     console.log(err);
   });
 
+//sequelize.sync({ alter: true });
 //sequelize.sync({ force: true });
