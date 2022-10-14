@@ -12,6 +12,10 @@ const Ad = sequelize.define('ad', {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  content: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   status: {
     type: DataTypes.BOOLEAN,
     defaultValue: true,
