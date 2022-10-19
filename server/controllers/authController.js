@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/User');
+const Role = require('../models/Role');
 const AppError = require('../helpers/appError');
 const catchAsync = require('../helpers/catchAsync');
 const sendEmail = require('../helpers/email');
@@ -65,7 +66,7 @@ exports.login = catchAsync(async (req, res, next) => {
   }
 
   //2.Check user && password
-  const user = await User.findOne({ where: { id } });
+  const user = await User.findOne({ where: { email } });
   if (!user || !correctPassword(user.password, password)) {
     return next(new AppError('Incorrect email or password', 401));
   }
@@ -82,7 +83,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer')
   ) {
-    token = req.headers.authorization.split('')[1];
+    token = req.headers.authorization.split(' ')[1];
   } else if (req.cookie.jwt) {
     token = req.cookie.jwt;
   }
@@ -98,7 +99,6 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   //3. User exists?
   const currentUser = await User.findOne({ where: { id: decode.id } });
-
   if (!currentUser) {
     return next(
       new AppError(
@@ -130,6 +130,8 @@ exports.logout = catchAsync(async (req, res, next) => {
     httpOnly: true,
   });
 
+  console.log(res.cookie);
+
   res.status(200).json({
     status: 'success',
   });
@@ -138,9 +140,11 @@ exports.logout = catchAsync(async (req, res, next) => {
 //RESTRICT_TO
 exports.restrictTo =
   (...rolesId) =>
-  (req, res, next) => {
-    //roles[1, 2, 3]
-    if (!rolesId.includes(req.user.rolesId)) {
+  async (req, res, next) => {
+    //roles['user', 'editor']
+    const role = await Role.findByPk(req.user.roleId);
+    console.log(role);
+    if (!rolesId.includes(role.name)) {
       return next(
         new AppError('You do not have permission to perform this action', 403)
       );

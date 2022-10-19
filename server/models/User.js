@@ -49,7 +49,7 @@ const User = sequelize.define(
   }
 );
 
-User.changedPasswordAfter = function (JWTTimestamp) {
+User.prototype.changedPasswordAfter = function (JWTTimestamp) {
   if (this.passwordChangedAt) {
     const changedTimestamp = parseInt(
       this.passwordChangedAt.getTime() / 1000,
@@ -61,7 +61,7 @@ User.changedPasswordAfter = function (JWTTimestamp) {
   return false;
 };
 
-User.createPasswordResetToken = function () {
+User.prototype.createPasswordResetToken = function () {
   const resetToken = crypto.randomBytes(32).toString('hex');
 
   //Encrypt random token

@@ -9,18 +9,21 @@ const User = require('./models/User');
 const Job = require('./models/Job');
 const Ad = require('./models/Ad');
 
+const authRouter = require('./routes/authRouter');
 const roleRouter = require('./routes/roleRouter');
 const userRouter = require('./routes/userRouter');
 const jobRouter = require('./routes/jobRouter');
 const adRouter = require('./routes/adRouter');
 
 const app = express();
+
 //=========== PARSER ===========
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(cookieParser());
 
 //=========== ROUTES ===========
+app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/roles', roleRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/jobs', jobRouter);
