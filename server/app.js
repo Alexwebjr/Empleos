@@ -4,6 +4,8 @@ const cookieParser = require('cookie-parser');
 const sequelize = require('./models/database');
 
 const AppError = require('./helpers/appError');
+const GlobalErrorHandler = require('./controllers/errorController');
+
 const Role = require('./models/Role');
 const User = require('./models/User');
 const Job = require('./models/Job');
@@ -38,6 +40,14 @@ app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 
+app.use(GlobalErrorHandler); //Global Handler
+
+//=========== REQ TIME ===========
+app.use((req, res, next) => {
+  req.requestTime = new Date().toISOString();
+  next();
+}); //To get reqTime
+
 //=========== DB ===========
 //RELATIONS
 //Role - User
@@ -64,7 +74,7 @@ Ad.belongsTo(User, {
   },
 });
 
-//SYNC
+//===========   SYNC   ===========
 sequelize
   .sync()
   .then(() => {

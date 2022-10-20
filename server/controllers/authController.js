@@ -152,6 +152,7 @@ exports.restrictTo =
     next();
   };
 
+//TODO:
 //FORGOT_PASSWORD
 exports.forgotPassword = catchAsync(async (req, res, next) => {
   //1. Get User by email
