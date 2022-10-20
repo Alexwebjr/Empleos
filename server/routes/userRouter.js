@@ -5,12 +5,12 @@ const authController = require('../controllers/authController');
 
 //:::::::::: ROUTE :::::::::: //
 router.use(authController.protect);
-router.use(authController.restrictTo('user'));
 router
   .route('/')
   .get(userController.getAllUsers)
   .post(userController.createUser);
 
+router.use(authController.restrictTo('Admin')); //only for admin
 router
   .route('/:id')
   .get(userController.getUser)

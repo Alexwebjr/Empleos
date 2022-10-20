@@ -19,6 +19,9 @@ const User = sequelize.define(
     password: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        len: [8, 16],
+      },
     },
     fullName: {
       type: DataTypes.STRING(50),
@@ -27,6 +30,9 @@ const User = sequelize.define(
     email: {
       type: DataTypes.STRING(50),
       allowNull: false,
+      validate: {
+        isEmail: true,
+      },
     },
     image: {
       type: DataTypes.STRING,

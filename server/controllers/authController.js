@@ -143,7 +143,6 @@ exports.restrictTo =
   async (req, res, next) => {
     //roles['user', 'editor']
     const role = await Role.findByPk(req.user.roleId);
-    console.log(role);
     if (!rolesId.includes(role.name)) {
       return next(
         new AppError('You do not have permission to perform this action', 403)
