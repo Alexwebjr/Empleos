@@ -14,11 +14,11 @@ const sendEmail = async options => {
 
   //2. Email options
   const mailOptions = {
-    from: 'AlexWebJr <mail@alexwebjr.com>',
+    from: 'AlexWebJr <info@empleos.com>',
     to: options.email,
     subject: options.subject,
     text: options.message,
-    //html
+    //html:
   };
 
   //3. Send

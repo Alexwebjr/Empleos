@@ -20,7 +20,7 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [8, 16],
+        len: [8],
       },
     },
     fullName: {
@@ -49,6 +49,9 @@ const User = sequelize.define(
   {
     hooks: {
       beforeCreate: async (user, options) => {
+        user.password = await bcrypt.hash(user.password, 12);
+      },
+      beforeUpdate: async (user, options) => {
         user.password = await bcrypt.hash(user.password, 12);
       },
     },

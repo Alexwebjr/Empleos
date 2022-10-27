@@ -18,8 +18,8 @@ const signToken = id =>
   });
 
 //CorrectPassword
-const correctPassword = async (userPassword, password) =>
-  await bcrypt.compare(userPassword, password);
+const correctPassword = async (password, userPassword) =>
+  await bcrypt.compare(password, userPassword);
 
 //createSendToken
 const createSendToken = (user, statusCode, res) => {
@@ -67,7 +67,8 @@ exports.login = catchAsync(async (req, res, next) => {
 
   //2.Check user && password
   const user = await User.findOne({ where: { email } });
-  if (!user || !correctPassword(user.password, password)) {
+  console.log('pwd valid:', await correctPassword(password, user.password));
+  if (!user || !(await correctPassword(password, user.password))) {
     return next(new AppError('Incorrect email or password', 401));
   }
 
@@ -210,17 +211,28 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     .digest('hex');
 
   const user = await User.findOne({
-    passwordResetToken: hashedToken,
-    passwordResetExpires: { where: { [Op.gt]: Date.now() } },
+    where: {
+      passwordResetToken: hashedToken,
+    },
   });
+
+  //passwordResetExpires: { where: { [Op.gt]: Date.now() } }
+
+  console.log(user);
 
   //2. token && user : new password
   if (!user) {
     return next(new AppError('Token is invalid or has expired', 400));
   }
 
-  user.password = req.body.password;
-  user.set({ password: req.body.password, passwordChangedAt: Date.now() });
+  let newPassword = req.body.password;
+  let confirmNewPassword = req.body.passwordConfirm;
+
+  if (newPassword !== confirmNewPassword) {
+    return next(new AppError('Confirm Password it is not the same', 400));
+  }
+
+  user.set({ password: newPassword, passwordChangedAt: Date.now() });
   const newUser = await user.save();
 
   //4. Log new User and create jwt
@@ -238,7 +250,6 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   }
 
   //3. Update
-  user.password = req.body.password;
   user.set({ password: req.body.password, passwordChangedAt: Date.now() });
   const newUser = await user.save();
 
