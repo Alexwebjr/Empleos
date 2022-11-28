@@ -1,6 +1,7 @@
 const express = require('express');
 require('dotenv').config();
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const sequelize = require('./models/database');
 
 const AppError = require('./helpers/appError');
@@ -34,6 +35,13 @@ app.use('/api/v1/ads', adRouter);
 app.get('/', (req, res) => {
   res.send('Server');
 });
+
+//=========== CORS ===========
+const corsOptions = {
+  origin: '*',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+};
+app.use(cors(corsOptions));
 
 //=========== ERROR ===========
 app.all('*', (req, res, next) => {
