@@ -25,6 +25,16 @@ app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(cookieParser());
 
+//=========== CORS ===========
+// const whiteList = ['http://127.0.0.1:5173'];
+// const corsOptions = {
+//   origin: '*',
+//   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+//   allowedHeaders:
+//     'Origin, X-Requested-With, X-Auth-Token, Content-Type,Accept, x-client-key, x-client-token, x-client-secret, Authorization',
+// };
+app.use(cors());
+
 //=========== ROUTES ===========
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/roles', roleRouter);
@@ -35,13 +45,6 @@ app.use('/api/v1/ads', adRouter);
 app.get('/', (req, res) => {
   res.send('Server');
 });
-
-//=========== CORS ===========
-const corsOptions = {
-  origin: '*',
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-};
-app.use(cors(corsOptions));
 
 //=========== ERROR ===========
 app.all('*', (req, res, next) => {
