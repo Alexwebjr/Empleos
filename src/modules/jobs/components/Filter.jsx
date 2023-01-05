@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { searchJobs } from '../store';
 import { Box, Grid } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
@@ -18,6 +20,13 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import WifiProtectedSetupIcon from '@mui/icons-material/WifiProtectedSetup';
 
 export const Filter = () => {
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    //Call jobs
+    dispatch(searchJobs());
+  });
+
   return (
     <Grid
       container

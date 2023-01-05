@@ -8,6 +8,7 @@ import { useForm } from '../../../hooks/';
 import { startCheking, startGoogleSignIn, startLogin } from '../store';
 
 export const LoginPage = () => {
+  //Calling Store
   const { status } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
@@ -21,9 +22,8 @@ export const LoginPage = () => {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    console.log(email, password);
     //dispatch(startCheking());
-    dispatch(startLogin());
+    dispatch(startLogin(email, password));
   };
 
   const onGoogleSignIn = () => {

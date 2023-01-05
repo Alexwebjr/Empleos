@@ -9,14 +9,15 @@ export const startCheking = () => {
   };
 };
 
-export const startLogin = () => {
-  return async (dispatch, { email, password }) => {
+export const startLogin = (email, password) => {
+  return async (dispatch) => {
     try {
+      //console.log(email, password);
       const resp = await jobApi.post('/auth/login', { email, password });
       console.log(resp);
       // localStorage.setItem('token', resp.token);
       // localStorage.setItem('token-init-date', new Date().getTime());
-      //dispatch(onLogin(resp));
+      // dispatch(onLogin(resp));
     } catch (error) {
       console.log({ error });
     }
