@@ -13,10 +13,10 @@ export const authSlice = createSlice({
   reducers: {
     onLogin: (state, { payload }) => {
       state.status = 'authenticated';
-      state.uid = payload.uid;
+      state.uid = payload.id;
       state.email = payload.email;
-      state.displayName = payload.displayName;
-      state.photoURL = payload.photoURL;
+      state.displayName = payload.userName;
+      //state.photoURL = payload.photoURL;
       state.errorMessage = null;
     },
     onLogout: (state, { payload }) => {

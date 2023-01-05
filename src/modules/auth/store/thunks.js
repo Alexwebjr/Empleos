@@ -1,5 +1,5 @@
 import { jobApi } from '../../../api';
-import { onCheckingCredentials, onLogin } from './';
+import { onCheckingCredentials, onLogin, onLogout } from './';
 
 export const startCheking = () => {
   return async (dispatch) => {
@@ -13,13 +13,16 @@ export const startLogin = (email, password) => {
   return async (dispatch) => {
     try {
       //console.log(email, password);
-      const resp = await jobApi.post('/auth/login', { email, password });
-      console.log(resp);
-      // localStorage.setItem('token', resp.token);
-      // localStorage.setItem('token-init-date', new Date().getTime());
-      // dispatch(onLogin(resp));
+      const { data } = await jobApi.post('/auth/login', { email, password });
+      console.log(data);
+      if (data.status == 'success') {
+        localStorage.setItem('token', JSON.stringify(data.token));
+        localStorage.setItem('token-init-date', new Date().getTime());
+        dispatch(onLogin(data.data.user));
+      }
     } catch (error) {
       console.log({ error });
+      dispatch(onLogout(error));
     }
   };
 };
