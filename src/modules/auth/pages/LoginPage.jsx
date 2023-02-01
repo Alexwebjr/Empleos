@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import { Google } from '@mui/icons-material';
@@ -6,12 +6,27 @@ import { Button, Grid, Link, TextField, Typography } from '@mui/material';
 import { AuthLayout } from '../layout/AuthLayout';
 import { useForm } from '../../../hooks/';
 import { startCheking, startGoogleSignIn, startLogin } from '../store';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+const MySwal = withReactContent(Swal);
 
 export const LoginPage = () => {
   //Calling Store
-  const { status } = useSelector((state) => state.auth);
+  const { status, user, errorMessage } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
+
+  //ErrorMessage
+  useEffect(() => {
+    if (errorMessage !== undefined) {
+      MySwal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: errorMessage,
+        footer: '<a href="">Why do I have this issue?</a>',
+      });
+    }
+  }, [errorMessage]);
 
   const { email, password, onInputChange, onResetForm } = useForm({
     email: 'test@email.com',
