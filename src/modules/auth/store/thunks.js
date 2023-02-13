@@ -19,7 +19,6 @@ export const startLogin = (email, password) => {
     try {
       //console.log(email, password);
       const { data } = await jobApi.post('/auth/login', { email, password });
-      console.log('c1', data);
 
       if (data.status == 'success') {
         localStorage.setItem('token', JSON.stringify(data.token));
@@ -47,5 +46,12 @@ export const startLogin = (email, password) => {
 export const startGoogleSignIn = () => {
   return async (dispatch) => {
     dispatch(checkingCredentials());
+  };
+};
+
+export const startLogout = () => {
+  return async (dispatch) => {
+    localStorage.clear();
+    dispatch(onLogout());
   };
 };

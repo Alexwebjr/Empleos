@@ -12,19 +12,14 @@ const MySwal = withReactContent(Swal);
 
 export const LoginPage = () => {
   //Calling Store
-  const { status, user, errorMessage } = useSelector((state) => state.auth);
+  const { status, userName, errorMessage } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
 
   //ErrorMessage
   useEffect(() => {
     if (errorMessage !== undefined) {
-      MySwal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: errorMessage,
-        footer: '<a href="">Why do I have this issue?</a>',
-      });
+      onMsg('error', 'Error', errorMessage);
     }
   }, [errorMessage]);
 
@@ -35,15 +30,25 @@ export const LoginPage = () => {
 
   const isAuthenticating = useMemo(() => status === 'checking', [status]);
 
-  const onSubmit = (event) => {
+  const onSubmit = async (event) => {
     event.preventDefault();
     //dispatch(startCheking());
-    dispatch(startLogin(email, password));
+    await dispatch(startLogin(email, password));
+    onMsg('success', 'Welcome', userName);
   };
 
   const onGoogleSignIn = () => {
     console.log('onGoogleSignIn');
     dispatch(startGoogleSignIn());
+  };
+
+  const onMsg = (type, title = 'Notification', msg) => {
+    MySwal.fire({
+      icon: type,
+      title: title,
+      text: 'Happy to see you again ' + msg,
+      footer: '<a href="">Why do I have this issue?</a>',
+    });
   };
 
   return (

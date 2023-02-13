@@ -17,7 +17,7 @@ export const AppRouter = () => {
         </>
       ) : (
         <>
-          <Route path="/auth/*" element={<AuthRoutes />} />
+          <Route path="/" element={<JobRoutes />} />
           <Route path="/admin/*" element={<AdminRoutes />} />
           <Route path="/*" element={<JobRoutes />} />
         </>
