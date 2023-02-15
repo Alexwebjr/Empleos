@@ -9,7 +9,6 @@ export const jobSlice = createSlice({
   reducers: {
     onLoad: (state, { payload }) => {
       state.jobs = payload.jobs;
-      state.errorMessage = null;
     },
   },
 });

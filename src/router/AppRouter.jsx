@@ -6,7 +6,6 @@ import { JobRoutes } from '../modules/jobs/routes/JobRoutes';
 
 export const AppRouter = () => {
   const { status } = useSelector((state) => state.auth);
-  console.log(status);
 
   return (
     <Routes>

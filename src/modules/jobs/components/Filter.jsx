@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { searchJobs } from '../store';
+import { startSearchJobs } from '../store';
 import { Box, Grid } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
@@ -20,12 +20,17 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import WifiProtectedSetupIcon from '@mui/icons-material/WifiProtectedSetup';
 
 export const Filter = () => {
+  const [sort, setSort] = React.useState(false);
+  const { jobs } = useSelector((state) => state.job);
   const dispatch = useDispatch();
 
+  //Calling jobs
   React.useEffect(() => {
-    //Call jobs
-    dispatch(searchJobs());
-  });
+    console.log('run');
+    dispatch(startSearchJobs());
+  }, []);
+
+  //Sorting by money/ Date / Id
 
   return (
     <Grid
@@ -76,149 +81,43 @@ export const Filter = () => {
         <List
           sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
         >
-          <ListItem alignItems="flex-start">
-            <ListItemAvatar>
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-            </ListItemAvatar>
-            <ListItemText
-              primary="Job Title"
-              secondary={
-                <React.Fragment>
-                  <Typography
-                    sx={{ display: 'inline' }}
-                    component="span"
-                    variant="body2"
-                    color="text.primary"
-                  >
-                    Ali Connors
-                  </Typography>
-                  {" — I'll be in your neighborhood doing errands this…"}
+          {jobs.map((job, i) => (
+            <ListItem alignItems="flex-start" key={job.id}>
+              <ListItemAvatar>
+                <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+              </ListItemAvatar>
+              <ListItemText
+                primary={job.title}
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary"
+                    >
+                      Ali Connors
+                    </Typography>
+                    {job.sumary}
 
-                  <Grid
-                    container
-                    spacing={2}
-                    justifyContent="space-between"
-                    sx={{ pt: 1 }}
-                  >
-                    <Grid item xs={6}>
-                      {'$123,000'}
+                    <Grid
+                      container
+                      spacing={2}
+                      justifyContent="space-between"
+                      sx={{ pt: 1 }}
+                    >
+                      <Grid item xs={6}>
+                        ${job.salary}
+                      </Grid>
+                      <Grid item xs={6}>
+                        {'Jan 9, 2014'}
+                      </Grid>
                     </Grid>
-                    <Grid item xs={6}>
-                      {'Jan 9, 2014'}
-                    </Grid>
-                  </Grid>
-                </React.Fragment>
-              }
-            />
-          </ListItem>
-          <Divider variant="inset" component="li" />
-          <ListItem alignItems="flex-start">
-            <ListItemAvatar>
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-            </ListItemAvatar>
-            <ListItemText
-              primary="Job Title"
-              secondary={
-                <React.Fragment>
-                  <Typography
-                    sx={{ display: 'inline' }}
-                    component="span"
-                    variant="body2"
-                    color="text.primary"
-                  >
-                    Ali Connors
-                  </Typography>
-                  {" — I'll be in your neighborhood doing errands this…"}
-
-                  <Grid
-                    container
-                    spacing={2}
-                    justifyContent="space-between"
-                    sx={{ pt: 1 }}
-                  >
-                    <Grid item xs={6}>
-                      {'$123,000'}
-                    </Grid>
-                    <Grid item xs={6}>
-                      {'Jan 9, 2014'}
-                    </Grid>
-                  </Grid>
-                </React.Fragment>
-              }
-            />
-          </ListItem>
-          <Divider variant="inset" component="li" />
-          <ListItem alignItems="flex-start">
-            <ListItemAvatar>
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-            </ListItemAvatar>
-            <ListItemText
-              primary="Job Title"
-              secondary={
-                <React.Fragment>
-                  <Typography
-                    sx={{ display: 'inline' }}
-                    component="span"
-                    variant="body2"
-                    color="text.primary"
-                  >
-                    Ali Connors
-                  </Typography>
-                  {" — I'll be in your neighborhood doing errands this…"}
-
-                  <Grid
-                    container
-                    spacing={2}
-                    justifyContent="space-between"
-                    sx={{ pt: 1 }}
-                  >
-                    <Grid item xs={6}>
-                      {'$123,000'}
-                    </Grid>
-                    <Grid item xs={6}>
-                      {'Jan 9, 2014'}
-                    </Grid>
-                  </Grid>
-                </React.Fragment>
-              }
-            />
-          </ListItem>
-          <Divider variant="inset" component="li" />
-          <ListItem alignItems="flex-start">
-            <ListItemAvatar>
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-            </ListItemAvatar>
-            <ListItemText
-              primary="Job Title"
-              secondary={
-                <React.Fragment>
-                  <Typography
-                    sx={{ display: 'inline' }}
-                    component="span"
-                    variant="body2"
-                    color="text.primary"
-                  >
-                    Ali Connors
-                  </Typography>
-                  {" — I'll be in your neighborhood doing errands this…"}
-
-                  <Grid
-                    container
-                    spacing={2}
-                    justifyContent="space-between"
-                    sx={{ pt: 1 }}
-                  >
-                    <Grid item xs={6}>
-                      {'$123,000'}
-                    </Grid>
-                    <Grid item xs={6}>
-                      {'Jan 9, 2014'}
-                    </Grid>
-                  </Grid>
-                </React.Fragment>
-              }
-            />
-          </ListItem>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+          ))}
         </List>
       </Grid>
 

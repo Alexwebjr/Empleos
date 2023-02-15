@@ -34,7 +34,6 @@ export const LoginPage = () => {
     event.preventDefault();
     //dispatch(startCheking());
     await dispatch(startLogin(email, password));
-    onMsg('success', 'Welcome', userName);
   };
 
   const onGoogleSignIn = () => {

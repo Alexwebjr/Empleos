@@ -136,9 +136,8 @@ export const NavBar = () => {
             }}
           >
             {pages.map((page) => (
-              <Link to={'/' + page.toLocaleLowerCase()}>
+              <Link to={'/' + page.toLocaleLowerCase()} key={page}>
                 <Button
-                  key={page}
                   onClick={handleCloseNavMenu}
                   sx={{ my: 2, color: 'white', display: 'block' }}
                 >
