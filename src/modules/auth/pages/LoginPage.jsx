@@ -32,7 +32,7 @@ export const LoginPage = () => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    //dispatch(startCheking());
+    dispatch(startCheking());
     await dispatch(startLogin(email, password));
   };
 

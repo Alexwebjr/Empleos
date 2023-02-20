@@ -6,7 +6,7 @@ const jobApi = axios.create({
   baseURL: VITE_API_URL,
 });
 
-//TODO: config interceptores
+//Config interceptores
 jobApi.interceptors.request.use((config) => {
   config.headers = {
     ...config.headers,
