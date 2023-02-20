@@ -110,7 +110,7 @@ export const Filter = () => {
                         ${job.salary}
                       </Grid>
                       <Grid item xs={6}>
-                        {'Jan 9, 2014'}
+                        {job.createdAt}
                       </Grid>
                     </Grid>
                   </React.Fragment>
