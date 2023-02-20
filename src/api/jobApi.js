@@ -7,5 +7,12 @@ const jobApi = axios.create({
 });
 
 //TODO: config interceptores
+jobApi.interceptors.request.use((config) => {
+  config.headers = {
+    ...config.headers,
+    jwt: localStorage.getItem('token'),
+  };
+  return config;
+});
 
 export default jobApi;
