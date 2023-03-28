@@ -4,20 +4,15 @@ import { startSearchJobs } from '../store';
 import { Box, Grid } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import PaidIcon from '@mui/icons-material/Paid';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import WifiProtectedSetupIcon from '@mui/icons-material/WifiProtectedSetup';
+import { JobListItem } from './JobListItem';
 
 export const Filter = () => {
   const [sort, setSort] = React.useState(false);
@@ -81,42 +76,8 @@ export const Filter = () => {
         <List
           sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
         >
-          {jobs.map((job, i) => (
-            <ListItem alignItems="flex-start" key={job.id}>
-              <ListItemAvatar>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-              </ListItemAvatar>
-              <ListItemText
-                primary={job.title}
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      sx={{ display: 'inline' }}
-                      component="span"
-                      variant="body2"
-                      color="text.primary"
-                    >
-                      Ali Connors
-                    </Typography>
-                    {job.sumary}
-
-                    <Grid
-                      container
-                      spacing={2}
-                      justifyContent="space-between"
-                      sx={{ pt: 1 }}
-                    >
-                      <Grid item xs={6}>
-                        ${job.salary}
-                      </Grid>
-                      <Grid item xs={6}>
-                        {job.createdAt}
-                      </Grid>
-                    </Grid>
-                  </React.Fragment>
-                }
-              />
-            </ListItem>
+          {jobs.map((job) => (
+            <JobListItem key={job.id} job={job} />
           ))}
         </List>
       </Grid>
