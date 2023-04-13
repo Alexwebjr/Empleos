@@ -5,13 +5,17 @@ export const jobSlice = createSlice({
   initialState: {
     jobs: [],
     errorMessage: null,
+    active: null,
   },
   reducers: {
     onLoad: (state, { payload }) => {
       state.jobs = payload.jobs;
     },
+    setActiveJob: (state, { payload }) => {
+      state.active = payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { onLoad } = jobSlice.actions;
+export const { onLoad, setActiveJob } = jobSlice.actions;

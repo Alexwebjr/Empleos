@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { useMemo } from 'react';
+import { useDispatch } from 'react-redux';
+import { setActiveJob } from '../store';
 import { Grid } from '@mui/material';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -8,6 +10,12 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 
 export const JobListItem = ({ job }) => {
+  const dispatch = useDispatch();
+
+  const onClickJob = () => {
+    dispatch(setActiveJob(job));
+  };
+
   const editedTitle = useMemo(() => {
     return job.title.length > 15
       ? job.title.substring(0, 15) + '...'
@@ -21,12 +29,12 @@ export const JobListItem = ({ job }) => {
   }, [job.summary]);
 
   return (
-    <ListItem alignItems="flex-start" key={job.id}>
+    <ListItem alignItems="flex-start" key={job.id} onClick={onClickJob}>
       <ListItemAvatar>
         <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
       </ListItemAvatar>
       <ListItemText
-        primary={job.title}
+        primary={editedTitle}
         secondary={
           <React.Fragment>
             <Typography
