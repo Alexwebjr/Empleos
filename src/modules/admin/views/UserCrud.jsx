@@ -19,6 +19,9 @@ import {
   MenuItem,
   Select,
   TextField,
+  Checkbox,
+  FormControlLabel,
+  FormGroup,
 } from '@mui/material';
 
 const columns = [
@@ -30,7 +33,7 @@ const columns = [
   },
   {
     field: 'userName',
-    headerName: 'UserName',
+    headerName: 'User',
     width: 150,
     editable: false,
   },
@@ -41,15 +44,15 @@ const columns = [
     editable: false,
   },
   {
-    field: 'role',
-    headerName: 'Role',
-    width: 150,
-    editable: false,
-  },
-  {
     field: 'email',
     headerName: 'Email',
     width: 200,
+  },
+  {
+    field: 'roleName',
+    headerName: 'Role',
+    width: 150,
+    editable: false,
   },
   {
     field: 'status',
@@ -88,7 +91,7 @@ const rows = [
 
 export const UserCrud = () => {
   //Store
-  const { users, errorMessage } = useSelector((state) => state.user);
+  const { users, roles, errorMessage } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [message, setMessage] = React.useState('');
   const [role, setRole] = React.useState('');
@@ -132,23 +135,20 @@ export const UserCrud = () => {
         <ModalBox btnText="Add new">
           <FormBox title="Adding new User">
             <Grid item sm={12} md={6}>
-              <TextField
-                id="filled-basic"
-                label="First Name"
-                variant="filled"
-              />
-            </Grid>
-
-            <Grid item sm={12} md={6}>
-              <TextField id="filled-basic" label="Last Name" variant="filled" />
-            </Grid>
-
-            <Grid item sm={12} md={6}>
-              <TextField id="filled-basic" label="User" variant="filled" />
+              <TextField id="filled-basic" label="UserName" variant="filled" />
             </Grid>
 
             <Grid item sm={12} md={6}>
               <TextField id="filled-basic" label="Password" variant="filled" />
+            </Grid>
+
+            <Grid item sm={12}>
+              <TextField
+                id="filled-basic"
+                label="Full Name"
+                variant="filled"
+                sx={{ width: '100%' }}
+              />
             </Grid>
 
             <Grid item sm={12}>
@@ -160,6 +160,7 @@ export const UserCrud = () => {
               />
             </Grid>
 
+            {/*Select */}
             <Grid item sm={12}>
               <FormControl variant="filled" sx={{ width: '100%' }}>
                 <InputLabel id="demo-simple-select-filled-label">
@@ -174,11 +175,21 @@ export const UserCrud = () => {
                   <MenuItem value="">
                     <em>None</em>
                   </MenuItem>
-                  <MenuItem value={10}>User</MenuItem>
-                  <MenuItem value={20}>Editor</MenuItem>
-                  <MenuItem value={30}>Admin</MenuItem>
+                  {/*Roles */}
+                  {roles.map((rol) => {
+                    return <MenuItem value={rol.id}>{rol.name}</MenuItem>;
+                  })}
                 </Select>
               </FormControl>
+            </Grid>
+            {/*Check */}
+            <Grid item sm={12}>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox defaultChecked />}
+                  label="Status"
+                />
+              </FormGroup>
             </Grid>
           </FormBox>
         </ModalBox>
