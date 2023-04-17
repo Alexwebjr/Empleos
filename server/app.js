@@ -31,7 +31,7 @@ app.use(cookieParser());
 //   origin: '*',
 //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 //   allowedHeaders:
-//     'Origin, X-Requested-With, X-Auth-Token, Content-Type,Accept, x-client-key, x-client-token, x-client-secret, Authorization',
+//     'Origin, X-Requested-With, X-Auth-Token, Content-Type,Accept, x-client-key, x-client-token, x-client-secret, Authorization, jwt',
 // };
 app.use(cors());
 

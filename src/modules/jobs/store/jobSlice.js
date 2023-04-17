@@ -4,7 +4,7 @@ export const jobSlice = createSlice({
   name: 'job',
   initialState: {
     jobs: [],
-    errorMessage: null,
+    errorMessage: undefined,
     active: null,
   },
   reducers: {

@@ -10,7 +10,7 @@ export const startCheking = () => {
   return async (dispatch) => {
     dispatch(onCheckingCredentials());
 
-    //const token = localStorage.getItem('jobToken');
+    //const token = localStorage.getItem('token');
   };
 };
 
@@ -21,7 +21,7 @@ export const startLogin = (email, password) => {
       const { data } = await jobApi.post('/auth/login', { email, password });
 
       if (data.status == 'success') {
-        localStorage.setItem('token', JSON.stringify(data.token));
+        localStorage.setItem('token', data.token);
         localStorage.setItem('token-init-date', new Date().getTime());
         dispatch(
           onLogin({

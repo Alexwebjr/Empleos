@@ -1,9 +1,14 @@
 import * as React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { startSearchUsers } from '../store/thunks';
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { FormBox, ModalBox } from '../../../components';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+const MySwal = withReactContent(Swal);
 
 import {
   Alert,
@@ -30,20 +35,14 @@ const columns = [
     editable: false,
   },
   {
+    field: 'fullName',
+    headerName: 'Full Name',
+    width: 150,
+    editable: false,
+  },
+  {
     field: 'role',
     headerName: 'Role',
-    width: 150,
-    editable: false,
-  },
-  {
-    field: 'firstName',
-    headerName: 'First name',
-    width: 150,
-    editable: false,
-  },
-  {
-    field: 'lastName',
-    headerName: 'Last name',
     width: 150,
     editable: false,
   },
@@ -51,6 +50,12 @@ const columns = [
     field: 'email',
     headerName: 'Email',
     width: 200,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 150,
+    editable: false,
   },
   {
     field: 'actions',
@@ -61,85 +66,53 @@ const columns = [
   },
 ];
 
+//Users
 const rows = [
   {
     id: 1,
     userName: 'jSnow',
+    fullName: 'Jon Snow',
     role: 'User',
-    lastName: 'Snow',
-    firstName: 'Jon',
     email: 'email@email.com',
+    status: true,
   },
   {
-    id: 2,
-    userName: 'cLannister',
-    role: 'Editor',
-    lastName: 'Lannister',
-    firstName: 'Cersei',
-    email: 'email@email.com',
-  },
-  {
-    id: 3,
-    userName: 'jLannister',
+    id: 1,
+    userName: 'jSnow',
+    fullName: 'Jon Snow',
     role: 'User',
-    lastName: 'Lannister',
-    firstName: 'Jaime',
     email: 'email@email.com',
-  },
-  {
-    id: 4,
-    userName: 'aStark',
-    role: 'User',
-    lastName: 'Stark',
-    firstName: 'Arya',
-    email: 'email@email.com',
-  },
-  {
-    id: 5,
-    userName: 'dTargaryen',
-    role: 'Admin',
-    lastName: 'Targaryen',
-    firstName: 'Daenerys',
-    email: 'email@email.com',
-  },
-  {
-    id: 6,
-    userName: 'Meli',
-    role: 'User',
-    lastName: 'Melisandre',
-    firstName: null,
-    email: 'email@email.com',
-  },
-  {
-    id: 7,
-    userName: 'fClifford',
-    role: 'User',
-    lastName: 'Clifford',
-    firstName: 'Ferrara',
-    email: 'email@email.com',
-  },
-  {
-    id: 8,
-    userName: 'rFrances',
-    role: 'Editor',
-    lastName: 'Frances',
-    firstName: 'Rossini',
-    email: 'email@email.com',
-  },
-  {
-    id: 9,
-    userName: 'hRoxie',
-    role: 'Admin',
-    lastName: 'Roxie',
-    firstName: 'Harvey',
-    age: 65,
+    status: true,
   },
 ];
 
 export const UserCrud = () => {
+  //Store
+  const { users, errorMessage } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const [message, setMessage] = React.useState('');
   const [role, setRole] = React.useState('');
 
+  //Calling users
+  React.useEffect(() => {
+    dispatch(startSearchUsers());
+  }, []);
+
+  //ErrorMessage
+  React.useEffect(() => {
+    if (errorMessage !== undefined) {
+      onMsg('error', 'Error', errorMessage);
+    }
+  }, [errorMessage]);
+
+  const onMsg = (type, title = 'Notification', msg) => {
+    MySwal.fire({
+      icon: type,
+      title: title,
+      text: 'Happy to see you again ' + msg,
+      footer: '<a href="">Why do I have this issue?</a>',
+    });
+  };
   const handleRowClick = (params) => {
     setMessage(`User name: "${params.row.firstName}" clicked`);
   };
@@ -212,7 +185,7 @@ export const UserCrud = () => {
       </Grid>
       {/*DATA GRID */}
       <DataGrid
-        rows={rows}
+        rows={users}
         columns={columns}
         pageSize={5}
         rowsPerPageOptions={[5]}

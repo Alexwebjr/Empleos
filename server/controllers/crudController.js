@@ -18,7 +18,7 @@ exports.createOne = Model =>
 exports.getAll = Model =>
   catchAsync(async (req, res, next) => {
     //filters...
-
+    console.log('test:' + req.headers.authorization);
     const docs = await Model.findAll();
 
     res.status(200).json({
