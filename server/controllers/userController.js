@@ -21,10 +21,41 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
     },
   });
 });
-exports.getUser = crudHelper.getOne(User);
+exports.getUser = catchAsync(async (req, res, next) => {
+  //filters...
+  const { id } = req.params;
+
+  let doc = await User.findOne({ where: { id }, include: Role });
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      data: doc,
+    },
+  });
+});
 
 //UPDATE
-exports.updateUser = crudHelper.updateOne(User);
+exports.updateUser = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+
+  let doc = await User.findOne({ where: { id }, include: Role });
+
+  if (!doc) {
+    return next(new AppError('Please provide a valid id', 400));
+  }
+
+  doc.set(req.body);
+
+  const newDoc = await doc.save();
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      data: newDoc,
+    },
+  });
+});
 
 //DELATE
 exports.deleUser = crudHelper.deleteOne(User);

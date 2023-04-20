@@ -1,6 +1,12 @@
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { startSearchUsers } from '../store/thunks';
+import { useForm } from '../../../hooks';
+import {
+  startAddUser,
+  startDeleteUser,
+  startSearchUsers,
+  startUpdateUser,
+} from '../store/thunks';
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -22,63 +28,12 @@ import {
   Checkbox,
   FormControlLabel,
   FormGroup,
+  Button,
 } from '@mui/material';
+import { Cancel, Save } from '@mui/icons-material';
 
-const columns = [
-  {
-    field: 'id',
-    headerName: '#',
-    width: 60,
-    editable: false,
-  },
-  {
-    field: 'userName',
-    headerName: 'User',
-    width: 150,
-    editable: false,
-  },
-  {
-    field: 'fullName',
-    headerName: 'Full Name',
-    width: 150,
-    editable: false,
-  },
-  {
-    field: 'email',
-    headerName: 'Email',
-    width: 200,
-  },
-  {
-    field: 'roleName',
-    headerName: 'Role',
-    width: 150,
-    editable: false,
-  },
-  {
-    field: 'status',
-    headerName: 'Status',
-    width: 150,
-    editable: false,
-  },
-  {
-    field: 'actions',
-    headerName: 'Actions',
-    type: 'actions',
-    width: 100,
-    getActions: () => [<EditIcon />, <DeleteIcon />],
-  },
-];
-
-//Users
+//Users demo
 const rows = [
-  {
-    id: 1,
-    userName: 'jSnow',
-    fullName: 'Jon Snow',
-    role: 'User',
-    email: 'email@email.com',
-    status: true,
-  },
   {
     id: 1,
     userName: 'jSnow',
@@ -91,7 +46,9 @@ const rows = [
 
 export const UserCrud = () => {
   //Store
-  const { users, roles, errorMessage } = useSelector((state) => state.user);
+  const { users, roles, active, errorMessage } = useSelector(
+    (state) => state.user
+  );
   const dispatch = useDispatch();
   const [message, setMessage] = React.useState('');
   const [role, setRole] = React.useState('');
@@ -108,6 +65,35 @@ export const UserCrud = () => {
     }
   }, [errorMessage]);
 
+  //Form
+  const {
+    userName,
+    password,
+    fullName,
+    email,
+    roleId,
+    status,
+    onInputChange,
+    onResetForm,
+  } = useForm({
+    userName: 'utest',
+    password: '12345678',
+    fullName: 'User Edited 3',
+    email: 'utest5@empleo.com',
+    roleId: 4,
+    status: false,
+  });
+
+  //const isAuthenticating = useMemo(() => status === 'checking', [status]);
+
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    await dispatch(
+      startAddUser({ userName, password, fullName, email, roleId, status })
+    );
+  };
+
+  //Msg
   const onMsg = (type, title = 'Notification', msg) => {
     MySwal.fire({
       icon: type,
@@ -116,8 +102,87 @@ export const UserCrud = () => {
       footer: '<a href="">Why do I have this issue?</a>',
     });
   };
+
+  //Grid
+  const columns = [
+    {
+      field: 'id',
+      headerName: '#',
+      width: 60,
+      editable: false,
+    },
+    {
+      field: 'userName',
+      headerName: 'User',
+      width: 150,
+      editable: false,
+    },
+    {
+      field: 'fullName',
+      headerName: 'Full Name',
+      width: 150,
+      editable: true,
+    },
+    {
+      field: 'email',
+      headerName: 'Email',
+      editable: false,
+
+      width: 200,
+    },
+    {
+      field: 'roleName',
+      headerName: 'Role',
+      width: 150,
+      editable: false,
+    },
+    {
+      field: 'status',
+      headerName: 'Status',
+      width: 150,
+      editable: false,
+    },
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      type: 'actions',
+      width: 100,
+      getActions: (params) => [
+        <EditIcon
+          style={{ cursor: 'pointer' }}
+          onClick={() => onEdit(params.row.id)}
+        />,
+        <DeleteIcon
+          style={{ cursor: 'pointer' }}
+          onClick={() => onDelete(params.row.id)}
+        />,
+      ],
+    },
+  ];
+
+  const onEdit = async (userId) => {
+    console.log('clicked');
+    await dispatch(
+      startUpdateUser({
+        id: userId,
+        userName,
+        password,
+        fullName,
+        email,
+        roleId,
+        status,
+      })
+    );
+    setMessage(`User name: "${userId}" edited`);
+  };
+
+  const onDelete = async (userId) => {
+    await dispatch(startDeleteUser(userId));
+    setMessage(`User name: "${userId}" deleted`);
+  };
+
   const handleRowClick = (params) => {
-    setMessage(`User name: "${params.row.firstName}" clicked`);
+    setMessage(`User name: "${params.row.fullName}" clicked`);
   };
 
   const handleChange = (event) => {
@@ -133,21 +198,38 @@ export const UserCrud = () => {
       {/*MODAL*/}
       <Grid item textAlign="end" paddingRight={3} paddingBottom={3}>
         <ModalBox btnText="Add new">
-          <FormBox title="Adding new User">
+          <FormBox title="Adding new User" onSave={onSubmit}>
             <Grid item sm={12} md={6}>
-              <TextField id="filled-basic" label="UserName" variant="filled" />
+              <TextField
+                id="filled-basic"
+                label="UserName"
+                name="userName"
+                variant="filled"
+                value={userName}
+                onChange={onInputChange}
+              />
             </Grid>
 
             <Grid item sm={12} md={6}>
-              <TextField id="filled-basic" label="Password" variant="filled" />
+              <TextField
+                id="filled-basic"
+                label="Password"
+                name="password"
+                variant="filled"
+                value={password}
+                onChange={onInputChange}
+              />
             </Grid>
 
             <Grid item sm={12}>
               <TextField
                 id="filled-basic"
                 label="Full Name"
+                name="fullName"
                 variant="filled"
                 sx={{ width: '100%' }}
+                value={fullName}
+                onChange={onInputChange}
               />
             </Grid>
 
@@ -155,8 +237,11 @@ export const UserCrud = () => {
               <TextField
                 id="filled-basic"
                 label="Email"
+                name="email"
                 variant="filled"
                 sx={{ width: '100%' }}
+                value={email}
+                onChange={onInputChange}
               />
             </Grid>
 
@@ -169,16 +254,19 @@ export const UserCrud = () => {
                 <Select
                   labelId="demo-simple-select-filled-label"
                   id="demo-simple-select-filled"
-                  value={role}
-                  onChange={handleChange}
+                  name="roleId"
+                  value={roleId}
+                  //onChange={handleChange}
+                  onChange={onInputChange}
                 >
                   <MenuItem value="">
                     <em>None</em>
                   </MenuItem>
                   {/*Roles */}
-                  {roles.map((rol) => {
-                    return <MenuItem value={rol.id}>{rol.name}</MenuItem>;
-                  })}
+                  {roles.length > 0 &&
+                    roles.map((rol) => {
+                      return <MenuItem value={rol.id}>{rol.name}</MenuItem>;
+                    })}
                 </Select>
               </FormControl>
             </Grid>
@@ -188,8 +276,34 @@ export const UserCrud = () => {
                 <FormControlLabel
                   control={<Checkbox defaultChecked />}
                   label="Status"
+                  name="status"
+                  value={status}
+                  onChange={onInputChange}
                 />
               </FormGroup>
+            </Grid>
+            {/*Buttons */}
+            <Grid item sm={12} md={6}>
+              <Button
+                variant="outlined"
+                color="error"
+                sx={{ width: '100%' }}
+                startIcon={<Cancel />}
+              >
+                Cancel
+              </Button>
+            </Grid>
+
+            <Grid item sm={12} md={6}>
+              <Button
+                variant="contained"
+                color="success"
+                endIcon={<Save />}
+                sx={{ width: '100%' }}
+                onClick={onSubmit}
+              >
+                Save
+              </Button>
             </Grid>
           </FormBox>
         </ModalBox>

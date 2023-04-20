@@ -13,28 +13,6 @@ export const FormBox = ({ title, children }) => {
         </Grid>
 
         {children}
-
-        <Grid item sm={12} md={6}>
-          <Button
-            variant="outlined"
-            color="error"
-            sx={{ width: '100%' }}
-            startIcon={<Cancel />}
-          >
-            Cancel
-          </Button>
-        </Grid>
-
-        <Grid item sm={12} md={6}>
-          <Button
-            variant="contained"
-            color="success"
-            endIcon={<Save />}
-            sx={{ width: '100%' }}
-          >
-            Save
-          </Button>
-        </Grid>
       </Grid>
     </>
   );

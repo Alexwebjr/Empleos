@@ -1,5 +1,5 @@
 import { userApi } from '../../../api/';
-import { onError, onLoad } from './userSlice';
+import { onDelete, onEdit, onError, onLoad, onSave } from './userSlice';
 
 export const startSearchUsers = () => {
   return async (dispatch) => {
@@ -16,6 +16,56 @@ export const startSearchUsers = () => {
       const roles = dataR.data.data;
 
       dispatch(onLoad({ users, roles }));
+    } catch (error) {
+      dispatch(onError(error.message));
+    }
+  };
+};
+
+export const startAddUser = (newUser) => {
+  return async (dispatch) => {
+    try {
+      const { data: response } = await userApi.post('/users', newUser);
+      if (response.status == 'success') {
+        const user = response.data.data;
+        dispatch(onSave({ user }));
+      }
+    } catch (error) {
+      dispatch(onError(error.message));
+    }
+  };
+};
+
+export const startUpdateUser = (userOld) => {
+  return async (dispatch) => {
+    try {
+      const { data: response } = await userApi.patch(
+        '/users/' + userOld.id,
+        userOld
+      );
+      const user = response.data.data;
+      delete user.password;
+      delete user.passwordChangedAt;
+      delete user.passwordResetToken;
+      delete user.passwordResetExpires;
+
+      if (response.status == 'success') {
+        console.log(user);
+        dispatch(onEdit({ user }));
+      }
+    } catch (error) {
+      dispatch(onError(error.message));
+    }
+  };
+};
+
+export const startDeleteUser = (userId) => {
+  return async (dispatch) => {
+    try {
+      const { data: response } = await userApi.delete('/users/' + userId);
+      //Update state
+      //const { data: response } = await userApi.delete('/users' + userId, {status: false,
+      dispatch(onDelete({ userId }));
     } catch (error) {
       dispatch(onError(error.message));
     }
