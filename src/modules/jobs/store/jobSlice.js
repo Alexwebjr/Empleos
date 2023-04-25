@@ -11,11 +11,11 @@ export const jobSlice = createSlice({
     onLoad: (state, { payload }) => {
       state.jobs = payload.jobs;
     },
-    setActiveJob: (state, { payload }) => {
+    onActiveJob: (state, { payload }) => {
       state.active = payload;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { onLoad, setActiveJob } = jobSlice.actions;
+export const { onLoad, onActiveJob } = jobSlice.actions;

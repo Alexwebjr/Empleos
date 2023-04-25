@@ -6,6 +6,7 @@ export const userSlice = createSlice({
     users: [],
     roles: {},
     active: {},
+    openModal: false,
     errorMessage: undefined,
   },
   reducers: {
@@ -16,9 +17,12 @@ export const userSlice = createSlice({
     onSave: (state, { payload }) => {
       state.users.push(payload.user);
     },
+    onActiveUser: (state, { payload }) => {
+      state.active = payload;
+    },
     onEdit: (state, { payload }) => {
-      const ind = state.users.findIndex((x) => x.id == payload.user.id);
-      state.users[ind] = payload.user;
+      const ind = state.users.findIndex((x) => x.id == payload.id);
+      state.users[ind] = { ...payload };
       state.errorMessage = 'User edited';
     },
     onDelete: (state, { payload }) => {
@@ -28,7 +32,22 @@ export const userSlice = createSlice({
     onError: (state, { payload }) => {
       state.errorMessage = payload;
     },
+    onOpenModal: (state) => {
+      state.openModal = true;
+    },
+    onCloseModal: (state) => {
+      state.openModal = false;
+    },
   },
 });
 
-export const { onLoad, onError, onSave, onEdit, onDelete } = userSlice.actions;
+export const {
+  onLoad,
+  onError,
+  onSave,
+  onEdit,
+  onDelete,
+  onActiveUser,
+  onOpenModal,
+  onCloseModal,
+} = userSlice.actions;

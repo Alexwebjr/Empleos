@@ -45,9 +45,14 @@ exports.updateUser = catchAsync(async (req, res, next) => {
     return next(new AppError('Please provide a valid id', 400));
   }
 
-  doc.set(req.body);
-
-  const newDoc = await doc.save();
+  //doc.set(req.body);
+  //const newDoc = await doc.save();
+  const newDoc = await doc.update(req.body);
+  delete user.password;
+  delete user.passwordChangedAt;
+  delete user.passwordResetToken;
+  delete user.passwordResetExpires;
+  //const newDoc = await doc.reload();
 
   res.status(200).json({
     status: 'success',

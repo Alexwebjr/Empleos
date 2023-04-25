@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useForm } from '../../../hooks';
 import {
   startAddUser,
   startDeleteUser,
   startSearchUsers,
   startUpdateUser,
 } from '../store/thunks';
+import { onActiveUser, onOpenModal } from '../store/userSlice';
+import { UserModalForm } from '../components/UserModalForm';
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { FormBox, ModalBox } from '../../../components';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 const MySwal = withReactContent(Swal);
@@ -30,7 +30,6 @@ import {
   FormGroup,
   Button,
 } from '@mui/material';
-import { Cancel, Save } from '@mui/icons-material';
 
 //Users demo
 const rows = [
@@ -51,7 +50,6 @@ export const UserCrud = () => {
   );
   const dispatch = useDispatch();
   const [message, setMessage] = React.useState('');
-  const [role, setRole] = React.useState('');
 
   //Calling users
   React.useEffect(() => {
@@ -65,33 +63,7 @@ export const UserCrud = () => {
     }
   }, [errorMessage]);
 
-  //Form
-  const {
-    userName,
-    password,
-    fullName,
-    email,
-    roleId,
-    status,
-    onInputChange,
-    onResetForm,
-  } = useForm({
-    userName: 'utest',
-    password: '12345678',
-    fullName: 'User Edited 3',
-    email: 'utest5@empleo.com',
-    roleId: 4,
-    status: false,
-  });
-
   //const isAuthenticating = useMemo(() => status === 'checking', [status]);
-
-  const onSubmit = async (event) => {
-    event.preventDefault();
-    await dispatch(
-      startAddUser({ userName, password, fullName, email, roleId, status })
-    );
-  };
 
   //Msg
   const onMsg = (type, title = 'Notification', msg) => {
@@ -150,7 +122,7 @@ export const UserCrud = () => {
       getActions: (params) => [
         <EditIcon
           style={{ cursor: 'pointer' }}
-          onClick={() => onEdit(params.row.id)}
+          onClick={() => onEdit(params.row)}
         />,
         <DeleteIcon
           style={{ cursor: 'pointer' }}
@@ -160,20 +132,39 @@ export const UserCrud = () => {
     },
   ];
 
-  const onEdit = async (userId) => {
-    console.log('clicked');
-    await dispatch(
-      startUpdateUser({
-        id: userId,
+  const onEdit = async (user) => {
+    const { id, userName, fullName, email, role, roleId, roleName, status } =
+      user;
+    //console.log(userId);
+    dispatch(
+      onActiveUser({
+        id,
         userName,
-        password,
         fullName,
         email,
+        role,
         roleId,
+        roleName,
         status,
       })
     );
-    setMessage(`User name: "${userId}" edited`);
+    //TODO: Open Modal
+    dispatch(onOpenModal());
+    //TODO: dispath startUpdateUser
+    //TODO: Show Message
+
+    // await dispatch(
+    //   startUpdateUser({
+    //     id: userId,
+    //     userName,
+    //     password,
+    //     fullName,
+    //     email,
+    //     roleId,
+    //     status,
+    //   })
+    // );
+    //setMessage(`User name: "${userId}" edited`);
   };
 
   const onDelete = async (userId) => {
@@ -197,116 +188,12 @@ export const UserCrud = () => {
       </Typography>
       {/*MODAL*/}
       <Grid item textAlign="end" paddingRight={3} paddingBottom={3}>
-        <ModalBox btnText="Add new">
-          <FormBox title="Adding new User" onSave={onSubmit}>
-            <Grid item sm={12} md={6}>
-              <TextField
-                id="filled-basic"
-                label="UserName"
-                name="userName"
-                variant="filled"
-                value={userName}
-                onChange={onInputChange}
-              />
-            </Grid>
-
-            <Grid item sm={12} md={6}>
-              <TextField
-                id="filled-basic"
-                label="Password"
-                name="password"
-                variant="filled"
-                value={password}
-                onChange={onInputChange}
-              />
-            </Grid>
-
-            <Grid item sm={12}>
-              <TextField
-                id="filled-basic"
-                label="Full Name"
-                name="fullName"
-                variant="filled"
-                sx={{ width: '100%' }}
-                value={fullName}
-                onChange={onInputChange}
-              />
-            </Grid>
-
-            <Grid item sm={12}>
-              <TextField
-                id="filled-basic"
-                label="Email"
-                name="email"
-                variant="filled"
-                sx={{ width: '100%' }}
-                value={email}
-                onChange={onInputChange}
-              />
-            </Grid>
-
-            {/*Select */}
-            <Grid item sm={12}>
-              <FormControl variant="filled" sx={{ width: '100%' }}>
-                <InputLabel id="demo-simple-select-filled-label">
-                  Rol
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-filled-label"
-                  id="demo-simple-select-filled"
-                  name="roleId"
-                  value={roleId}
-                  //onChange={handleChange}
-                  onChange={onInputChange}
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  {/*Roles */}
-                  {roles.length > 0 &&
-                    roles.map((rol) => {
-                      return <MenuItem value={rol.id}>{rol.name}</MenuItem>;
-                    })}
-                </Select>
-              </FormControl>
-            </Grid>
-            {/*Check */}
-            <Grid item sm={12}>
-              <FormGroup>
-                <FormControlLabel
-                  control={<Checkbox defaultChecked />}
-                  label="Status"
-                  name="status"
-                  value={status}
-                  onChange={onInputChange}
-                />
-              </FormGroup>
-            </Grid>
-            {/*Buttons */}
-            <Grid item sm={12} md={6}>
-              <Button
-                variant="outlined"
-                color="error"
-                sx={{ width: '100%' }}
-                startIcon={<Cancel />}
-              >
-                Cancel
-              </Button>
-            </Grid>
-
-            <Grid item sm={12} md={6}>
-              <Button
-                variant="contained"
-                color="success"
-                endIcon={<Save />}
-                sx={{ width: '100%' }}
-                onClick={onSubmit}
-              >
-                Save
-              </Button>
-            </Grid>
-          </FormBox>
-        </ModalBox>
+        {/*Add or Edit*/}
+        <UserModalForm
+          btnTitle={'Add New'}
+          title={'Add new user'}
+          type={'demoEdit'}
+        />
       </Grid>
       {/*DATA GRID */}
       <DataGrid

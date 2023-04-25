@@ -21,7 +21,6 @@ export const Filter = () => {
 
   //Calling jobs
   React.useEffect(() => {
-    console.log('run');
     dispatch(startSearchJobs());
   }, []);
 

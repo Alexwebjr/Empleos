@@ -44,14 +44,9 @@ export const startUpdateUser = (userOld) => {
         userOld
       );
       const user = response.data.data;
-      delete user.password;
-      delete user.passwordChangedAt;
-      delete user.passwordResetToken;
-      delete user.passwordResetExpires;
 
       if (response.status == 'success') {
-        console.log(user);
-        dispatch(onEdit({ user }));
+        dispatch(onEdit(user));
       }
     } catch (error) {
       dispatch(onError(error.message));

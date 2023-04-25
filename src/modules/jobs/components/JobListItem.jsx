@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
-import { setActiveJob } from '../store';
+import { onActiveJob } from '../store';
 import { Grid } from '@mui/material';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -13,7 +13,7 @@ export const JobListItem = ({ job }) => {
   const dispatch = useDispatch();
 
   const onClickJob = () => {
-    dispatch(setActiveJob(job));
+    dispatch(onActiveJob(job));
   };
 
   const editedTitle = useMemo(() => {
