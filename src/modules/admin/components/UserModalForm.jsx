@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FormBox, ModalBox } from '../../../components';
 import { useForm } from '../../../hooks';
 
 import {
@@ -23,10 +22,10 @@ import {
   DialogTitle,
 } from '@mui/material';
 import { Cancel, Save } from '@mui/icons-material';
-import { startAddUser } from '../store/thunks';
+import { startAddUser, startUpdateUser } from '../store/thunks';
 import { onCloseModal, onOpenModal } from '../store/userSlice';
 
-export const UserModalForm = ({ btnTitle, title, type }) => {
+export const UserModalForm = () => {
   //Store
   const { roles, active, openModal } = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -38,7 +37,6 @@ export const UserModalForm = ({ btnTitle, title, type }) => {
   const handleClose = () => {
     dispatch(onCloseModal());
   };
-
   //Form
   const {
     userName,
@@ -47,6 +45,7 @@ export const UserModalForm = ({ btnTitle, title, type }) => {
     email,
     roleId,
     status,
+    setFormState,
     onInputChange,
     onResetForm,
   } = useForm({
@@ -58,13 +57,17 @@ export const UserModalForm = ({ btnTitle, title, type }) => {
     status: active.status,
   });
 
-  //Events
-  const onSubmit = async (event) => {
-    event.preventDefault();
-    await dispatch(
-      startAddUser({ userName, password, fullName, email, roleId, status })
-    );
-  };
+  //Active Changed Modify Form
+  React.useEffect(() => {
+    setFormState({
+      userName: active.userName,
+      password: '',
+      fullName: active.fullName,
+      email: active.email,
+      roleId: active.roleId,
+      status: active.status,
+    });
+  }, [active]);
 
   //Events Object
   const eventsLibrary = {
@@ -75,11 +78,11 @@ export const UserModalForm = ({ btnTitle, title, type }) => {
       );
     },
     edit: async () => {
+      dispatch(onCloseModal());
       await dispatch(
         startUpdateUser({
-          id: userId,
+          id: active.id,
           userName,
-          password,
           fullName,
           email,
           roleId,
@@ -100,15 +103,12 @@ export const UserModalForm = ({ btnTitle, title, type }) => {
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>
-        {btnTitle}
+        ADD NEW
       </Button>
       <Dialog open={openModal} onClose={handleClose}>
-        <DialogTitle>{title}</DialogTitle>
+        <DialogTitle>USER MODAL FORM</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            To subscribe to this website, please enter your email address here.
-            We will send updates occasionally.
-          </DialogContentText>
+          <DialogContentText></DialogContentText>
           {/*FORM */}
           <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
             <Grid item sm={12} md={6}>
@@ -122,16 +122,20 @@ export const UserModalForm = ({ btnTitle, title, type }) => {
               />
             </Grid>
 
-            <Grid item sm={12} md={6}>
-              <TextField
-                id="filled-basic"
-                label="Password"
-                name="password"
-                variant="filled"
-                value={password}
-                onChange={onInputChange}
-              />
-            </Grid>
+            {/*Conditional Rendering */}
+            {Object.keys(active).length === 0 && (
+              <Grid item sm={12} md={6}>
+                <TextField
+                  id="filled-basic"
+                  type="password"
+                  label="Password"
+                  name="password"
+                  variant="filled"
+                  value={password}
+                  onChange={onInputChange}
+                />
+              </Grid>
+            )}
 
             <Grid item sm={12}>
               <TextField
@@ -168,6 +172,7 @@ export const UserModalForm = ({ btnTitle, title, type }) => {
                   id="demo-simple-select-filled"
                   name="roleId"
                   value={roleId}
+                  defaultValue={active.roleId}
                   onChange={onInputChange}
                 >
                   <MenuItem value="">
@@ -206,13 +211,17 @@ export const UserModalForm = ({ btnTitle, title, type }) => {
             Cancel
           </Button>
           <Button
-            onClick={eventsLibrary[type]}
+            onClick={
+              Object.keys(active).length === 0
+                ? eventsLibrary['add']
+                : eventsLibrary['edit']
+            }
             color="success"
             variant="contained"
             endIcon={<Save />}
             sx={{ width: '100%' }}
           >
-            Save
+            {Object.keys(active).length === 0 ? 'Save' : 'Update'}
           </Button>
         </DialogActions>
       </Dialog>

@@ -45,9 +45,7 @@ const rows = [
 
 export const UserCrud = () => {
   //Store
-  const { users, roles, active, errorMessage } = useSelector(
-    (state) => state.user
-  );
+  const { users, errorMessage } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [message, setMessage] = React.useState('');
 
@@ -150,34 +148,28 @@ export const UserCrud = () => {
     );
     //TODO: Open Modal
     dispatch(onOpenModal());
-    //TODO: dispath startUpdateUser
-    //TODO: Show Message
-
-    // await dispatch(
-    //   startUpdateUser({
-    //     id: userId,
-    //     userName,
-    //     password,
-    //     fullName,
-    //     email,
-    //     roleId,
-    //     status,
-    //   })
-    // );
-    //setMessage(`User name: "${userId}" edited`);
   };
 
   const onDelete = async (userId) => {
-    await dispatch(startDeleteUser(userId));
-    setMessage(`User name: "${userId}" deleted`);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await dispatch(startDeleteUser(userId));
+        setMessage(`User name: "${userId}" deleted`);
+        Swal.fire('Deleted!', 'User has been deleted.', 'success');
+      }
+    });
   };
 
   const handleRowClick = (params) => {
     setMessage(`User name: "${params.row.fullName}" clicked`);
-  };
-
-  const handleChange = (event) => {
-    setRole(event.target.value);
   };
 
   return (
@@ -186,14 +178,9 @@ export const UserCrud = () => {
       <Typography variant="h2" gutterBottom>
         Users
       </Typography>
-      {/*MODAL*/}
+      {/*MODAL FORM*/}
       <Grid item textAlign="end" paddingRight={3} paddingBottom={3}>
-        {/*Add or Edit*/}
-        <UserModalForm
-          btnTitle={'Add New'}
-          title={'Add new user'}
-          type={'demoEdit'}
-        />
+        <UserModalForm />
       </Grid>
       {/*DATA GRID */}
       <DataGrid

@@ -36,6 +36,7 @@ export const userSlice = createSlice({
       state.openModal = true;
     },
     onCloseModal: (state) => {
+      state.active = {};
       state.openModal = false;
     },
   },
