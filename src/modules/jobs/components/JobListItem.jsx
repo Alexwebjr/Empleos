@@ -49,6 +49,7 @@ export const JobListItem = ({ job }) => {
             <Grid
               container
               spacing={2}
+              component="span"
               justifyContent="space-between"
               sx={{ pt: 1 }}
             >

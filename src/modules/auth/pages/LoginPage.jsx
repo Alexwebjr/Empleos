@@ -9,6 +9,7 @@ import { startCheking, startGoogleSignIn, startLogin } from '../store';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 const MySwal = withReactContent(Swal);
+import { sweetAlert } from '../../../helpers/sweetAlert';
 
 export const LoginPage = () => {
   //Calling Store
@@ -19,7 +20,7 @@ export const LoginPage = () => {
   //ErrorMessage
   useEffect(() => {
     if (errorMessage !== undefined) {
-      onMsg('error', 'Error', errorMessage);
+      sweetAlert['onMsg']('error', 'Error', errorMessage);
     }
   }, [errorMessage]);
 
@@ -39,15 +40,6 @@ export const LoginPage = () => {
   const onGoogleSignIn = () => {
     console.log('onGoogleSignIn');
     dispatch(startGoogleSignIn());
-  };
-
-  const onMsg = (type, title = 'Notification', msg) => {
-    MySwal.fire({
-      icon: type,
-      title: title,
-      text: 'Happy to see you again ' + msg,
-      footer: '<a href="">Why do I have this issue?</a>',
-    });
   };
 
   return (

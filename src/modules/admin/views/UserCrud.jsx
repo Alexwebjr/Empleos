@@ -15,6 +15,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 const MySwal = withReactContent(Swal);
+import { sweetAlert } from '../../../helpers/sweetAlert';
 
 import {
   Alert,
@@ -57,21 +58,13 @@ export const UserCrud = () => {
   //ErrorMessage
   React.useEffect(() => {
     if (errorMessage !== undefined) {
-      onMsg('error', 'Error', errorMessage);
+      sweetAlert['onMsg']('error', 'Error', errorMessage);
     }
   }, [errorMessage]);
 
   //const isAuthenticating = useMemo(() => status === 'checking', [status]);
 
   //Msg
-  const onMsg = (type, title = 'Notification', msg) => {
-    MySwal.fire({
-      icon: type,
-      title: title,
-      text: 'Happy to see you again ' + msg,
-      footer: '<a href="">Why do I have this issue?</a>',
-    });
-  };
 
   //Grid
   const columns = [
@@ -151,21 +144,15 @@ export const UserCrud = () => {
   };
 
   const onDelete = async (userId) => {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!',
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        await dispatch(startDeleteUser(userId));
-        setMessage(`User name: "${userId}" deleted`);
-        Swal.fire('Deleted!', 'User has been deleted.', 'success');
-      }
-    });
+    const callback = async (userId) => {
+      await dispatch(startDeleteUser(userId));
+      Swal.fire('Deleted!', 'User has been deleted.', 'success');
+    };
+    sweetAlert['onConfirm'](
+      () => callback(userId),
+      'Seguro?',
+      'Quieres borrar este usuario?'
+    );
   };
 
   const handleRowClick = (params) => {

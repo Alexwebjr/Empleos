@@ -47,6 +47,7 @@ export const UserModalForm = () => {
     status,
     setFormState,
     onInputChange,
+    onCheckChange,
     onResetForm,
   } = useForm({
     userName: active.userName,
@@ -64,8 +65,8 @@ export const UserModalForm = () => {
       password: '',
       fullName: active.fullName,
       email: active.email,
-      roleId: active.roleId,
-      status: active.status,
+      roleId: active.roleId !== undefined ? active.roleId : '',
+      status: active.status === true ? true : false,
     });
   }, [active]);
 
@@ -113,7 +114,7 @@ export const UserModalForm = () => {
           <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
             <Grid item sm={12} md={6}>
               <TextField
-                id="filled-basic"
+                id="userName"
                 label="UserName"
                 name="userName"
                 variant="filled"
@@ -126,7 +127,7 @@ export const UserModalForm = () => {
             {Object.keys(active).length === 0 && (
               <Grid item sm={12} md={6}>
                 <TextField
-                  id="filled-basic"
+                  id="password"
                   type="password"
                   label="Password"
                   name="password"
@@ -139,7 +140,7 @@ export const UserModalForm = () => {
 
             <Grid item sm={12}>
               <TextField
-                id="filled-basic"
+                id="fullName"
                 label="Full Name"
                 name="fullName"
                 variant="filled"
@@ -151,7 +152,7 @@ export const UserModalForm = () => {
 
             <Grid item sm={12}>
               <TextField
-                id="filled-basic"
+                id="email"
                 label="Email"
                 name="email"
                 variant="filled"
@@ -168,8 +169,8 @@ export const UserModalForm = () => {
                   Rol
                 </InputLabel>
                 <Select
-                  labelId="demo-simple-select-filled-label"
-                  id="demo-simple-select-filled"
+                  labelId="LabelroleId"
+                  id="roleId"
                   name="roleId"
                   value={roleId}
                   defaultValue={active.roleId}
@@ -180,8 +181,12 @@ export const UserModalForm = () => {
                   </MenuItem>
                   {/*Roles */}
                   {roles.length > 0 &&
-                    roles.map((rol) => {
-                      return <MenuItem value={rol.id}>{rol.name}</MenuItem>;
+                    roles.map((rol, i) => {
+                      return (
+                        <MenuItem key={i} value={rol.id}>
+                          {rol.name}
+                        </MenuItem>
+                      );
                     })}
                 </Select>
               </FormControl>
@@ -192,9 +197,11 @@ export const UserModalForm = () => {
                 <FormControlLabel
                   control={<Checkbox defaultChecked />}
                   label="Status"
+                  id="status"
                   name="status"
-                  value={status}
-                  onChange={onInputChange}
+                  checked={status}
+                  //onClick={onChangeStatus}
+                  onChange={onCheckChange}
                 />
               </FormGroup>
             </Grid>
