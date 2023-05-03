@@ -1,4 +1,4 @@
-import { userApi } from '../../../api/';
+import { adminApi } from '../../../api/';
 import { onLoading } from '../../auth/store';
 import {
   onCloseModal,
@@ -17,8 +17,8 @@ export const startSearchUsers = () => {
   return async (dispatch) => {
     try {
       dispatch(onLoading(true));
-      const { data: dataU } = await userApi.get('/users');
-      const { data: dataR } = await userApi.get('/roles');
+      const { data: dataU } = await adminApi.get('/users');
+      const { data: dataR } = await adminApi.get('/roles');
       let users = dataU.data.data;
 
       users.forEach((u) => {
@@ -40,7 +40,7 @@ export const startAddUser = (newUser) => {
   return async (dispatch) => {
     try {
       dispatch(onLoading(true));
-      const { data: response } = await userApi.post('/users', newUser);
+      const { data: response } = await adminApi.post('/users', newUser);
       if (response.status == 'success') {
         const user = response.data.data;
         setRoleName(user); //set Role Name
@@ -57,7 +57,7 @@ export const startUpdateUser = (userOld) => {
   return async (dispatch) => {
     try {
       dispatch(onLoading(true));
-      const { data: response } = await userApi.patch(
+      const { data: response } = await adminApi.patch(
         '/users/' + userOld.id,
         userOld
       );
@@ -84,11 +84,11 @@ export const startDeleteUser = (userId) => {
   return async (dispatch) => {
     try {
       dispatch(onLoading(true));
-      //const { data: response } = await userApi.delete('/users/' + userId);
+      //const { data: response } = await adminApi.delete('/users/' + userId);
       //dispatch(onDelete({ userId }));
 
       //Update state
-      const { data: response } = await userApi.patch('/users/' + userId, {
+      const { data: response } = await adminApi.patch('/users/' + userId, {
         status: false,
       });
 
