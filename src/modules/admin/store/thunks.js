@@ -1,4 +1,5 @@
 import { userApi } from '../../../api/';
+import { onLoading } from '../../auth/store';
 import {
   onCloseModal,
   onDelete,
@@ -15,6 +16,7 @@ const setRoleName = (user) => {
 export const startSearchUsers = () => {
   return async (dispatch) => {
     try {
+      dispatch(onLoading(true));
       const { data: dataU } = await userApi.get('/users');
       const { data: dataR } = await userApi.get('/roles');
       let users = dataU.data.data;
@@ -30,12 +32,14 @@ export const startSearchUsers = () => {
     } catch (error) {
       dispatch(onError(error.message));
     }
+    dispatch(onLoading(false));
   };
 };
 
 export const startAddUser = (newUser) => {
   return async (dispatch) => {
     try {
+      dispatch(onLoading(true));
       const { data: response } = await userApi.post('/users', newUser);
       if (response.status == 'success') {
         const user = response.data.data;
@@ -45,12 +49,14 @@ export const startAddUser = (newUser) => {
     } catch (error) {
       dispatch(onError(error.message));
     }
+    dispatch(onLoading(false));
   };
 };
 
 export const startUpdateUser = (userOld) => {
   return async (dispatch) => {
     try {
+      dispatch(onLoading(true));
       const { data: response } = await userApi.patch(
         '/users/' + userOld.id,
         userOld
@@ -70,12 +76,14 @@ export const startUpdateUser = (userOld) => {
     } catch (error) {
       dispatch(onError(error.response.data.message));
     }
+    dispatch(onLoading(false));
   };
 };
 
 export const startDeleteUser = (userId) => {
   return async (dispatch) => {
     try {
+      dispatch(onLoading(true));
       //const { data: response } = await userApi.delete('/users/' + userId);
       //dispatch(onDelete({ userId }));
 
@@ -83,9 +91,13 @@ export const startDeleteUser = (userId) => {
       const { data: response } = await userApi.patch('/users/' + userId, {
         status: false,
       });
-      dispatch(onEdit(user));
+
+      if (response.status == 'success') {
+        dispatch(onDelete(userId));
+      }
     } catch (error) {
       dispatch(onError(error.message));
     }
+    dispatch(onLoading(false));
   };
 };

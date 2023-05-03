@@ -3,7 +3,8 @@ import {
   onCheckingCredentials,
   onLogin,
   onLogout,
-  clearErrorMessage,
+  onClearErrorMessage,
+  onLoading,
 } from './';
 
 export const startCheking = () => {
@@ -18,6 +19,7 @@ export const startLogin = (email, password) => {
   return async (dispatch) => {
     try {
       //console.log(email, password);
+      dispatch(onLoading(true));
       const { data } = await jobApi.post('/auth/login', { email, password });
 
       if (data.status == 'success') {
@@ -37,7 +39,7 @@ export const startLogin = (email, password) => {
       dispatch(onLogout(error.message));
 
       setTimeout(() => {
-        dispatch(clearErrorMessage());
+        dispatch(onClearErrorMessage());
       }, 3000);
     }
   };

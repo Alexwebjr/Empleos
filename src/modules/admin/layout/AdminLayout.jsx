@@ -1,10 +1,11 @@
 import { Box, Toolbar } from '@mui/material';
-import { NavBar, SideBar } from '../../../components';
+import { Loading, NavBar, SideBar } from '../../../components';
 import { AdminSideBar } from '../components/AdminSideBar';
 
 export const AdminLayout = ({ children }) => {
   return (
     <Box sx={{ display: 'flex' }}>
+      <Loading />
       <NavBar />
 
       {/**SideBar / Filter */}

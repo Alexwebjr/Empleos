@@ -23,14 +23,28 @@ export const userSlice = createSlice({
     onEdit: (state, { payload }) => {
       const ind = state.users.findIndex((x) => x.id == payload.id);
       state.users[ind] = { ...payload };
-      state.errorMessage = 'User edited';
+      state.errorMessage = {
+        type: 'success',
+        title: 'User edited',
+        text: 'User modify',
+      };
     },
     onDelete: (state, { payload }) => {
-      state.users = state.users.filter((x) => x.id != payload.userId);
-      state.errorMessage = 'User deleted';
+      //state.users = state.users.filter((x) => x.id != payload.userId);
+      const ind = state.users.findIndex((x) => x.id == payload);
+      state.users[ind] = { ...state.users[ind], status: false };
+      state.errorMessage = {
+        type: 'success',
+        title: 'User deleted',
+        text: 'User deleted',
+      };
     },
     onError: (state, { payload }) => {
-      state.errorMessage = payload;
+      state.errorMessage = {
+        type: 'error',
+        title: 'Error',
+        text: payload,
+      };
     },
     onOpenModal: (state) => {
       state.openModal = true;

@@ -17,20 +17,7 @@ import withReactContent from 'sweetalert2-react-content';
 const MySwal = withReactContent(Swal);
 import { sweetAlert } from '../../../helpers/sweetAlert';
 
-import {
-  Alert,
-  FormControl,
-  Grid,
-  Typography,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-  Checkbox,
-  FormControlLabel,
-  FormGroup,
-  Button,
-} from '@mui/material';
+import { Alert, Grid, Typography } from '@mui/material';
 
 //Users demo
 const rows = [
@@ -58,7 +45,7 @@ export const UserCrud = () => {
   //ErrorMessage
   React.useEffect(() => {
     if (errorMessage !== undefined) {
-      sweetAlert['onMsg']('error', 'Error', errorMessage);
+      sweetAlert['onMsg'](errorMessage);
     }
   }, [errorMessage]);
 
@@ -160,27 +147,29 @@ export const UserCrud = () => {
   };
 
   return (
-    <Box sx={{ height: 400, width: '100%' }}>
-      {/*TITLE */}
-      <Typography variant="h2" gutterBottom>
-        Users
-      </Typography>
-      {/*MODAL FORM*/}
-      <Grid item textAlign="end" paddingRight={3} paddingBottom={3}>
-        <UserModalForm />
-      </Grid>
-      {/*DATA GRID */}
-      <DataGrid
-        rows={users}
-        columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-        disableSelectionOnClick
-        experimentalFeatures={{ newEditingApi: true }}
-        onRowClick={handleRowClick}
-      />
+    <>
+      <Box sx={{ height: 400, width: '100%' }}>
+        {/*TITLE */}
+        <Typography variant="h2" gutterBottom>
+          Users
+        </Typography>
+        {/*MODAL FORM*/}
+        <Grid item textAlign="end" paddingRight={3} paddingBottom={3}>
+          <UserModalForm />
+        </Grid>
+        {/*DATA GRID */}
+        <DataGrid
+          rows={users}
+          columns={columns}
+          pageSize={5}
+          rowsPerPageOptions={[5]}
+          disableSelectionOnClick
+          experimentalFeatures={{ newEditingApi: true }}
+          onRowClick={handleRowClick}
+        />
 
-      {message && <Alert severity="info">{message}</Alert>}
-    </Box>
+        {message && <Alert severity="info">{message}</Alert>}
+      </Box>
+    </>
   );
 };

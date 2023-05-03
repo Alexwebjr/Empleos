@@ -3,11 +3,11 @@ import withReactContent from 'sweetalert2-react-content';
 const MySwal = withReactContent(Swal);
 
 export const sweetAlert = {
-  onMsg: (type, title = 'Notification', msg) => {
+  onMsg: ({ type, title = 'Notification', text }) => {
     MySwal.fire({
       icon: type,
       title: title,
-      text: msg,
+      text,
       //footer: '<a href="">Why do I have this issue?</a>',
     });
   },
