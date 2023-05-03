@@ -6,7 +6,11 @@ import {
   startSearchUsers,
   startUpdateUser,
 } from '../store/thunks';
-import { onActiveUser, onOpenModal } from '../store/userSlice';
+import {
+  onActiveUser,
+  onClearErrorMessage,
+  onOpenModal,
+} from '../store/userSlice';
 import { UserModalForm } from '../components/UserModalForm';
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
@@ -47,6 +51,8 @@ export const UserCrud = () => {
     if (errorMessage !== undefined) {
       sweetAlert['onMsg'](errorMessage);
     }
+
+    dispatch(onClearErrorMessage()); //reset
   }, [errorMessage]);
 
   //const isAuthenticating = useMemo(() => status === 'checking', [status]);

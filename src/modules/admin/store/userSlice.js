@@ -46,6 +46,9 @@ export const userSlice = createSlice({
         text: payload,
       };
     },
+    onClearErrorMessage: (state) => {
+      state.errorMessage = undefined;
+    },
     onOpenModal: (state) => {
       state.openModal = true;
     },
@@ -65,4 +68,5 @@ export const {
   onActiveUser,
   onOpenModal,
   onCloseModal,
+  onClearErrorMessage,
 } = userSlice.actions;
