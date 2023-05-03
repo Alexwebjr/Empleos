@@ -37,23 +37,15 @@ const rows = [
 
 export const UserCrud = () => {
   //Store
-  const { users, errorMessage } = useSelector((state) => state.admin);
+  const { users } = useSelector((state) => state.admin);
   const dispatch = useDispatch();
   const [message, setMessage] = React.useState('');
-
-  //ErrorMessage
-  React.useEffect(() => {
-    if (errorMessage !== undefined) {
-      sweetAlert['onMsg'](errorMessage);
-      dispatch(onClearErrorMessage()); //reset
-    }
-  }, [errorMessage]);
 
   //const isAuthenticating = useMemo(() => status === 'checking', [status]);
 
   //Msg
 
-  //Grid
+  //UserGrid columns
   const columns = [
     {
       field: 'id',

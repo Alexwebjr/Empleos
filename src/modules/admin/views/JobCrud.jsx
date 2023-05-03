@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useSelector } from 'react-redux';
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -15,51 +16,6 @@ import {
   Select,
   TextField,
 } from '@mui/material';
-
-const columns = [
-  {
-    field: 'id',
-    headerName: '#',
-    width: 60,
-    editable: false,
-  },
-  {
-    field: 'userName',
-    headerName: 'UserName',
-    width: 150,
-    editable: false,
-  },
-  {
-    field: 'role',
-    headerName: 'Role',
-    width: 150,
-    editable: false,
-  },
-  {
-    field: 'firstName',
-    headerName: 'First name',
-    width: 150,
-    editable: false,
-  },
-  {
-    field: 'lastName',
-    headerName: 'Last name',
-    width: 150,
-    editable: false,
-  },
-  {
-    field: 'email',
-    headerName: 'Email',
-    width: 200,
-  },
-  {
-    field: 'actions',
-    headerName: 'Actions',
-    type: 'actions',
-    width: 100,
-    getActions: () => [<EditIcon />, <DeleteIcon />],
-  },
-];
 
 const rows = [
   {
@@ -137,8 +93,61 @@ const rows = [
 ];
 
 export const JobCrud = () => {
+  //Store
+  const { jobs } = useSelector((state) => state.admin);
   const [message, setMessage] = React.useState('');
   const [role, setRole] = React.useState('');
+
+  //JobGrid Columns
+  const columns = [
+    {
+      field: 'id',
+      headerName: '#',
+      width: 60,
+      editable: false,
+    },
+    {
+      field: 'title',
+      headerName: 'Title',
+      width: 150,
+      editable: false,
+    },
+    {
+      field: 'description',
+      headerName: 'Role',
+      width: 150,
+      editable: false,
+    },
+    {
+      field: 'salary',
+      headerName: 'Salary',
+      width: 150,
+      editable: false,
+    },
+    {
+      field: 'createdAt',
+      headerName: 'Created At',
+      width: 200,
+    },
+    {
+      field: 'updatedAt',
+      headerName: 'Updated At',
+      width: 200,
+    },
+    {
+      field: 'status',
+      headerName: 'Status',
+      width: 150,
+      editable: false,
+    },
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      type: 'actions',
+      width: 100,
+      getActions: () => [<EditIcon />, <DeleteIcon />],
+    },
+  ];
 
   const handleRowClick = (params) => {
     setMessage(`User name: "${params.row.firstName}" clicked`);
@@ -213,7 +222,7 @@ export const JobCrud = () => {
       </Grid>
       {/*DATA GRID */}
       <DataGrid
-        rows={rows}
+        rows={jobs}
         columns={columns}
         pageSize={5}
         rowsPerPageOptions={[5]}
