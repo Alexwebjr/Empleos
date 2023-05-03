@@ -1,2 +1,2 @@
-export * from './userSlice';
+export * from './adminSlice';
 export * from './thunks';

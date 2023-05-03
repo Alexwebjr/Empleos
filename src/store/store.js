@@ -1,13 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { authSlice } from '../modules/auth/store/authSlice';
 import { jobSlice } from '../modules/jobs/store';
-import { userSlice } from '../modules/admin/store';
+import { adminSlice } from '../modules/admin/store';
 
 export const store = configureStore({
   reducer: {
     auth: authSlice.reducer,
     job: jobSlice.reducer,
-    user: userSlice.reducer,
+    admin: adminSlice.reducer,
   },
 });
 

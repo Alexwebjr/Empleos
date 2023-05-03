@@ -3,14 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   startAddUser,
   startDeleteUser,
-  startSearchUsers,
+  startLoadingData,
   startUpdateUser,
 } from '../store/thunks';
 import {
   onActiveUser,
   onClearErrorMessage,
   onOpenModal,
-} from '../store/userSlice';
+} from '../store/adminSlice';
 import { UserModalForm } from '../components/UserModalForm';
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
@@ -37,22 +37,16 @@ const rows = [
 
 export const UserCrud = () => {
   //Store
-  const { users, errorMessage } = useSelector((state) => state.user);
+  const { users, errorMessage } = useSelector((state) => state.admin);
   const dispatch = useDispatch();
   const [message, setMessage] = React.useState('');
-
-  //Calling users
-  React.useEffect(() => {
-    dispatch(startSearchUsers());
-  }, []);
 
   //ErrorMessage
   React.useEffect(() => {
     if (errorMessage !== undefined) {
       sweetAlert['onMsg'](errorMessage);
+      dispatch(onClearErrorMessage()); //reset
     }
-
-    dispatch(onClearErrorMessage()); //reset
   }, [errorMessage]);
 
   //const isAuthenticating = useMemo(() => status === 'checking', [status]);

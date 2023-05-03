@@ -27,8 +27,8 @@ export const LoginPage = () => {
   useEffect(() => {
     if (errorMessage !== undefined) {
       sweetAlert['onMsg'](errorMessage);
+      dispatch(onClearErrorMessage); //reset
     }
-    dispatch(onClearErrorMessage); //reset
   }, [errorMessage]);
 
   const { email, password, onInputChange, onResetForm } = useForm({

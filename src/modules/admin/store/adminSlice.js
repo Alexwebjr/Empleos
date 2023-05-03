@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export const userSlice = createSlice({
-  name: 'user',
+export const adminSlice = createSlice({
+  name: 'admin',
   initialState: {
     users: [],
-    roles: {},
+    roles: [],
+    jobs: [],
     active: {},
     openModal: false,
     errorMessage: undefined,
@@ -13,6 +14,7 @@ export const userSlice = createSlice({
     onLoad: (state, { payload }) => {
       state.users = payload.users;
       state.roles = payload.roles;
+      state.jobs = payload.jobs;
     },
     onSave: (state, { payload }) => {
       state.users.push(payload.user);
@@ -69,4 +71,4 @@ export const {
   onOpenModal,
   onCloseModal,
   onClearErrorMessage,
-} = userSlice.actions;
+} = adminSlice.actions;

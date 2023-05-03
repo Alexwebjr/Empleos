@@ -7,28 +7,30 @@ import {
   onError,
   onLoad,
   onSave,
-} from './userSlice';
+} from './adminSlice';
 
 const setRoleName = (user) => {
   user.roleName = user.role.name;
 };
 
-export const startSearchUsers = () => {
+export const startLoadingData = () => {
   return async (dispatch) => {
     try {
       dispatch(onLoading(true));
       const { data: dataU } = await adminApi.get('/users');
       const { data: dataR } = await adminApi.get('/roles');
+      const { data: dataJ } = await adminApi.get('/jobs');
       let users = dataU.data.data;
+      const roles = dataR.data.data;
+      const jobs = dataJ.data.data;
 
       users.forEach((u) => {
         setRoleName(u);
       });
 
       console.log(users);
-      const roles = dataR.data.data;
 
-      dispatch(onLoad({ users, roles }));
+      dispatch(onLoad({ users, roles, jobs }));
     } catch (error) {
       dispatch(onError(error.message));
     }

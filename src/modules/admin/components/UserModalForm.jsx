@@ -23,11 +23,11 @@ import {
 } from '@mui/material';
 import { Cancel, Save } from '@mui/icons-material';
 import { startAddUser, startUpdateUser } from '../store/thunks';
-import { onCloseModal, onOpenModal } from '../store/userSlice';
+import { onCloseModal, onOpenModal } from '../store/adminSlice';
 
 export const UserModalForm = () => {
   //Store
-  const { roles, active, openModal } = useSelector((state) => state.user);
+  const { roles, active, openModal } = useSelector((state) => state.admin);
   const dispatch = useDispatch();
 
   const handleClickOpen = () => {
