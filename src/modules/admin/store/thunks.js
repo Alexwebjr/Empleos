@@ -1,11 +1,13 @@
 import { adminApi } from '../../../api/';
+import { convertDateFormat } from '../../../helpers';
 import { onLoading } from '../../auth/store';
 import {
-  onCloseModal,
   onDelete,
   onEdit,
   onError,
-  onLoad,
+  onLoadAds,
+  onLoadJobs,
+  onLoadUsers,
   onSave,
 } from './adminSlice';
 
@@ -13,16 +15,14 @@ const setRoleName = (user) => {
   user.roleName = user.role.name;
 };
 
-export const startLoadingData = () => {
+export const startLoadingUsers = () => {
   return async (dispatch) => {
     try {
       dispatch(onLoading(true));
       const { data: dataU } = await adminApi.get('/users');
       const { data: dataR } = await adminApi.get('/roles');
-      const { data: dataJ } = await adminApi.get('/jobs');
       let users = dataU.data.data;
       const roles = dataR.data.data;
-      const jobs = dataJ.data.data;
 
       users.forEach((u) => {
         setRoleName(u);
@@ -30,7 +30,37 @@ export const startLoadingData = () => {
 
       console.log(users);
 
-      dispatch(onLoad({ users, roles, jobs }));
+      dispatch(onLoadUsers({ users, roles }));
+    } catch (error) {
+      dispatch(onError(error.message));
+    }
+    dispatch(onLoading(false));
+  };
+};
+
+export const startLoadingJobs = () => {
+  return async (dispatch) => {
+    try {
+      dispatch(onLoading(true));
+      const { data } = await adminApi.get('/jobs');
+      const jobs = convertDateFormat(data.data.data);
+
+      dispatch(onLoadJobs({ jobs }));
+    } catch (error) {
+      dispatch(onError(error.message));
+    }
+    dispatch(onLoading(false));
+  };
+};
+
+export const startLoadingAds = () => {
+  return async (dispatch) => {
+    try {
+      dispatch(onLoading(true));
+      const { data } = await adminApi.get('/ads');
+      const ads = data.data.data;
+
+      dispatch(onLoadAds({ ads }));
     } catch (error) {
       dispatch(onError(error.message));
     }

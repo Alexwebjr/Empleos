@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { startLoadingJobs } from '../store/thunks';
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -97,6 +98,12 @@ export const JobCrud = () => {
   const { jobs } = useSelector((state) => state.admin);
   const [message, setMessage] = React.useState('');
   const [role, setRole] = React.useState('');
+  const dispatch = useDispatch();
+
+  //Calling data
+  React.useEffect(() => {
+    dispatch(startLoadingJobs());
+  }, []);
 
   //JobGrid Columns
   const columns = [

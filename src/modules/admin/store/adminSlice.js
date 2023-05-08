@@ -6,6 +6,7 @@ export const adminSlice = createSlice({
     users: [],
     roles: [],
     jobs: [],
+    ads: [],
     active: {},
     openModal: false,
     errorMessage: undefined,
@@ -15,6 +16,16 @@ export const adminSlice = createSlice({
       state.users = payload.users;
       state.roles = payload.roles;
       state.jobs = payload.jobs;
+    },
+    onLoadJobs: (state, { payload }) => {
+      state.jobs = payload.jobs;
+    },
+    onLoadUsers: (state, { payload }) => {
+      state.users = payload.users;
+      state.roles = payload.roles;
+    },
+    onLoadAds: (state, { payload }) => {
+      state.ads = payload.ads;
     },
     onSave: (state, { payload }) => {
       state.users.push(payload.user);
@@ -63,6 +74,9 @@ export const adminSlice = createSlice({
 
 export const {
   onLoad,
+  onLoadJobs,
+  onLoadUsers,
+  onLoadAds,
   onError,
   onSave,
   onEdit,

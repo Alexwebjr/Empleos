@@ -1,11 +1,6 @@
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  startAddUser,
-  startDeleteUser,
-  startLoadingData,
-  startUpdateUser,
-} from '../store/thunks';
+import { startDeleteUser, startLoadingUsers } from '../store/thunks';
 import {
   onActiveUser,
   onClearErrorMessage,
@@ -40,6 +35,11 @@ export const UserCrud = () => {
   const { users } = useSelector((state) => state.admin);
   const dispatch = useDispatch();
   const [message, setMessage] = React.useState('');
+
+  //Calling data
+  React.useEffect(() => {
+    dispatch(startLoadingUsers());
+  }, []);
 
   //const isAuthenticating = useMemo(() => status === 'checking', [status]);
 

@@ -34,8 +34,7 @@ export const startLogin = (email, password) => {
         );
       }
     } catch (error) {
-      console.log('c2', error.message);
-
+      dispatch(onLoading(false));
       dispatch(onLogout(error.message));
 
       setTimeout(() => {
