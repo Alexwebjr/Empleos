@@ -2,7 +2,8 @@ import { adminApi } from '../../../api/';
 import { convertDateFormat } from '../../../helpers';
 import { onLoading } from '../../auth/store';
 import {
-  onDelete,
+  onDeleteJob,
+  onDeleteUser,
   onEdit,
   onError,
   onLoadAds,
@@ -15,6 +16,7 @@ const setRoleName = (user) => {
   user.roleName = user.role.name;
 };
 
+//READING
 export const startLoadingUsers = () => {
   return async (dispatch) => {
     try {
@@ -68,6 +70,7 @@ export const startLoadingAds = () => {
   };
 };
 
+//CREATE
 export const startAddUser = (newUser) => {
   return async (dispatch) => {
     try {
@@ -85,6 +88,25 @@ export const startAddUser = (newUser) => {
   };
 };
 
+//TODO:
+export const startAddJob = (newJob) => {
+  return async (dispatch) => {
+    try {
+      console.log(newJob);
+      // dispatch(onLoading(true));
+      // const { data: response } = await adminApi.post('/jobs', newJob);
+      // if (response.status == 'success') {
+      //   const job = response.data.data;
+      //   dispatch(onSave({ job }));
+      // }
+    } catch (error) {
+      dispatch(onError(error.message));
+    }
+    dispatch(onLoading(false));
+  };
+};
+
+//UPDATE
 export const startUpdateUser = (userOld) => {
   return async (dispatch) => {
     try {
@@ -112,12 +134,13 @@ export const startUpdateUser = (userOld) => {
   };
 };
 
+//DELETE
 export const startDeleteUser = (userId) => {
   return async (dispatch) => {
     try {
       dispatch(onLoading(true));
       //const { data: response } = await adminApi.delete('/users/' + userId);
-      //dispatch(onDelete({ userId }));
+      //dispatch(onDeleteUser({ userId }));
 
       //Update state
       const { data: response } = await adminApi.patch('/users/' + userId, {
@@ -125,7 +148,27 @@ export const startDeleteUser = (userId) => {
       });
 
       if (response.status == 'success') {
-        dispatch(onDelete(userId));
+        dispatch(onDeleteUser(userId));
+      }
+    } catch (error) {
+      dispatch(onError(error.message));
+    }
+    dispatch(onLoading(false));
+  };
+};
+
+export const startDeleteJob = (jobId) => {
+  return async (dispatch) => {
+    try {
+      dispatch(onLoading(true));
+
+      //Update state
+      const { data: response } = await adminApi.patch('/jobs/' + jobId, {
+        status: false,
+      });
+
+      if (response.status == 'success') {
+        dispatch(onDeleteJob(jobId));
       }
     } catch (error) {
       dispatch(onError(error.message));

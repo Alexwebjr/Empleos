@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { startLoadingJobs } from '../store/thunks';
+import { startDeleteJob, startLoadingJobs } from '../store/thunks';
+import { JobModalForm } from '../components/JobModalForm';
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -17,6 +18,7 @@ import {
   Select,
   TextField,
 } from '@mui/material';
+import { sweetAlert } from '../../../helpers';
 
 const rows = [
   {
@@ -152,7 +154,13 @@ export const JobCrud = () => {
       headerName: 'Actions',
       type: 'actions',
       width: 100,
-      getActions: () => [<EditIcon />, <DeleteIcon />],
+      getActions: (params) => [
+        <EditIcon />,
+        <DeleteIcon
+          style={{ cursor: 'pointer' }}
+          onClick={() => onDelete(params.row.id)}
+        />,
+      ],
     },
   ];
 
@@ -164,68 +172,27 @@ export const JobCrud = () => {
     setRole(event.target.value);
   };
 
+  const onDelete = async (jobIs) => {
+    const callback = async (jobIs) => {
+      await dispatch(startDeleteJob(jobIs));
+      Swal.fire('Deleted!', 'Job has been deleted.', 'success');
+    };
+    sweetAlert['onConfirm'](
+      () => callback(jobIs),
+      'Seguro?',
+      'Quieres borrar esta Vacante?'
+    );
+  };
+
   return (
     <Box sx={{ height: 400, width: '100%' }}>
       {/*TITLE */}
       <Typography variant="h2" gutterBottom>
         Jobs
       </Typography>
-      {/*MODAL*/}
+      {/*MODAL FORM*/}
       <Grid item textAlign="end" paddingRight={3} paddingBottom={3}>
-        <ModalBox btnText="Add new">
-          {/*FORM*/}
-          <FormBox title="Adding new Job">
-            <Grid item sm={12} md={6}>
-              <TextField
-                id="filled-basic"
-                label="First Name"
-                variant="filled"
-              />
-            </Grid>
-
-            <Grid item sm={12} md={6}>
-              <TextField id="filled-basic" label="Last Name" variant="filled" />
-            </Grid>
-
-            <Grid item sm={12} md={6}>
-              <TextField id="filled-basic" label="User" variant="filled" />
-            </Grid>
-
-            <Grid item sm={12} md={6}>
-              <TextField id="filled-basic" label="Password" variant="filled" />
-            </Grid>
-
-            <Grid item sm={12}>
-              <TextField
-                id="filled-basic"
-                label="Email"
-                variant="filled"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-
-            <Grid item sm={12}>
-              <FormControl variant="filled" sx={{ width: '100%' }}>
-                <InputLabel id="demo-simple-select-filled-label">
-                  Rol
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-filled-label"
-                  id="demo-simple-select-filled"
-                  value={role}
-                  onChange={handleChange}
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value={10}>User</MenuItem>
-                  <MenuItem value={20}>Editor</MenuItem>
-                  <MenuItem value={30}>Admin</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-          </FormBox>
-        </ModalBox>
+        <JobModalForm />
       </Grid>
       {/*DATA GRID */}
       <DataGrid

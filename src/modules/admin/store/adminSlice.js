@@ -42,7 +42,7 @@ export const adminSlice = createSlice({
         text: 'User modify',
       };
     },
-    onDelete: (state, { payload }) => {
+    onDeleteUser: (state, { payload }) => {
       //state.users = state.users.filter((x) => x.id != payload.userId);
       const ind = state.users.findIndex((x) => x.id == payload);
       state.users[ind] = { ...state.users[ind], status: false };
@@ -50,6 +50,16 @@ export const adminSlice = createSlice({
         type: 'success',
         title: 'User deleted',
         text: 'User deleted',
+      };
+    },
+    onDeleteJob: (state, { payload }) => {
+      //state.users = state.users.filter((x) => x.id != payload.userId);
+      const ind = state.jobs.findIndex((x) => x.id == payload);
+      state.jobs[ind] = { ...state.jobs[ind], status: false };
+      state.errorMessage = {
+        type: 'success',
+        title: 'Job deleted',
+        text: 'Job deleted',
       };
     },
     onError: (state, { payload }) => {
@@ -80,7 +90,8 @@ export const {
   onError,
   onSave,
   onEdit,
-  onDelete,
+  onDeleteUser,
+  onDeleteJob,
   onActiveUser,
   onOpenModal,
   onCloseModal,
