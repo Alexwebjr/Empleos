@@ -7,7 +7,9 @@ export const adminSlice = createSlice({
     roles: [],
     jobs: [],
     ads: [],
-    active: {},
+    activeUser: {},
+    activeJob: {},
+    activeAdd: {},
     openModal: false,
     errorMessage: undefined,
   },
@@ -17,23 +19,35 @@ export const adminSlice = createSlice({
       state.roles = payload.roles;
       state.jobs = payload.jobs;
     },
-    onLoadJobs: (state, { payload }) => {
-      state.jobs = payload.jobs;
-    },
     onLoadUsers: (state, { payload }) => {
       state.users = payload.users;
       state.roles = payload.roles;
     },
+    onLoadJobs: (state, { payload }) => {
+      state.jobs = payload.jobs;
+    },
     onLoadAds: (state, { payload }) => {
       state.ads = payload.ads;
     },
-    onSave: (state, { payload }) => {
+    onSaveUser: (state, { payload }) => {
       state.users.push(payload.user);
     },
-    onActiveUser: (state, { payload }) => {
-      state.active = payload;
+    onSaveJob: (state, { payload }) => {
+      state.users.push(payload.job);
     },
-    onEdit: (state, { payload }) => {
+    onSaveAdd: (state, { payload }) => {
+      state.users.push(payload.add);
+    },
+    onActiveUser: (state, { payload }) => {
+      state.activeUser = payload;
+    },
+    onActiveJob: (state, { payload }) => {
+      state.activeJob = payload;
+    },
+    onActiveAdd: (state, { payload }) => {
+      state.activeAdd = payload;
+    },
+    onEditUser: (state, { payload }) => {
       const ind = state.users.findIndex((x) => x.id == payload.id);
       state.users[ind] = { ...payload };
       state.errorMessage = {
@@ -42,14 +56,13 @@ export const adminSlice = createSlice({
         text: 'User modify',
       };
     },
-    onDeleteUser: (state, { payload }) => {
-      //state.users = state.users.filter((x) => x.id != payload.userId);
-      const ind = state.users.findIndex((x) => x.id == payload);
-      state.users[ind] = { ...state.users[ind], status: false };
+    onEditJob: (state, { payload }) => {
+      const ind = state.jobs.findIndex((x) => x.id == payload.id);
+      state.jobs[ind] = { ...payload };
       state.errorMessage = {
         type: 'success',
-        title: 'User deleted',
-        text: 'User deleted',
+        title: 'Job edited',
+        text: 'Job modify',
       };
     },
     onDeleteJob: (state, { payload }) => {
@@ -60,6 +73,16 @@ export const adminSlice = createSlice({
         type: 'success',
         title: 'Job deleted',
         text: 'Job deleted',
+      };
+    },
+    onDeleteUser: (state, { payload }) => {
+      //state.users = state.users.filter((x) => x.id != payload.userId);
+      const ind = state.users.findIndex((x) => x.id == payload);
+      state.users[ind] = { ...state.users[ind], status: false };
+      state.errorMessage = {
+        type: 'success',
+        title: 'User deleted',
+        text: 'User deleted',
       };
     },
     onError: (state, { payload }) => {
@@ -76,7 +99,9 @@ export const adminSlice = createSlice({
       state.openModal = true;
     },
     onCloseModal: (state) => {
-      state.active = {};
+      state.activeUser = {};
+      state.activeJob = {};
+      state.activeAdd = {};
       state.openModal = false;
     },
   },
@@ -88,11 +113,15 @@ export const {
   onLoadUsers,
   onLoadAds,
   onError,
-  onSave,
-  onEdit,
+  onSaveUser,
+  onSaveJob,
+  onSaveAdd,
+  onEditUser,
+  onEditJob,
   onDeleteUser,
   onDeleteJob,
   onActiveUser,
+  onActiveJob,
   onOpenModal,
   onCloseModal,
   onClearErrorMessage,

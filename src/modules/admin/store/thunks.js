@@ -4,12 +4,14 @@ import { onLoading } from '../../auth/store';
 import {
   onDeleteJob,
   onDeleteUser,
-  onEdit,
+  onEditUser,
+  onEditJob,
   onError,
   onLoadAds,
   onLoadJobs,
   onLoadUsers,
-  onSave,
+  onSaveJob,
+  onSaveUser,
 } from './adminSlice';
 
 const setRoleName = (user) => {
@@ -29,8 +31,6 @@ export const startLoadingUsers = () => {
       users.forEach((u) => {
         setRoleName(u);
       });
-
-      console.log(users);
 
       dispatch(onLoadUsers({ users, roles }));
     } catch (error) {
@@ -79,7 +79,7 @@ export const startAddUser = (newUser) => {
       if (response.status == 'success') {
         const user = response.data.data;
         setRoleName(user); //set Role Name
-        dispatch(onSave({ user }));
+        dispatch(onSaveUser({ user }));
       }
     } catch (error) {
       dispatch(onError(error.message));
@@ -88,17 +88,15 @@ export const startAddUser = (newUser) => {
   };
 };
 
-//TODO:
 export const startAddJob = (newJob) => {
   return async (dispatch) => {
     try {
-      console.log(newJob);
-      // dispatch(onLoading(true));
-      // const { data: response } = await adminApi.post('/jobs', newJob);
-      // if (response.status == 'success') {
-      //   const job = response.data.data;
-      //   dispatch(onSave({ job }));
-      // }
+      dispatch(onLoading(true));
+      const { data: response } = await adminApi.post('/jobs', newJob);
+      if (response.status == 'success') {
+        const job = response.data.data;
+        dispatch(onSaveJob({ job }));
+      }
     } catch (error) {
       dispatch(onError(error.message));
     }
@@ -117,15 +115,33 @@ export const startUpdateUser = (userOld) => {
       );
       const user = response.data.data;
       setRoleName(user); //set Role Name
-      console.log(user);
       delete user.password;
       delete user.passwordChangedAt;
       delete user.passwordResetToken;
       delete user.passwordResetExpires;
-      console.log(user);
 
       if (response.status == 'success') {
-        dispatch(onEdit(user));
+        dispatch(onEditUser(user));
+      }
+    } catch (error) {
+      dispatch(onError(error.response.data.message));
+    }
+    dispatch(onLoading(false));
+  };
+};
+
+export const startUpdateJob = (jobOld) => {
+  return async (dispatch) => {
+    try {
+      dispatch(onLoading(true));
+      const { data: response } = await adminApi.patch(
+        '/jobs/' + jobOld.id,
+        jobOld
+      );
+
+      if (response.status == 'success') {
+        const job = convertDateFormat([response.data.data])[0];
+        dispatch(onEditJob(job));
       }
     } catch (error) {
       dispatch(onError(error.response.data.message));

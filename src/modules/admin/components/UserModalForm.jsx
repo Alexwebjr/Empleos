@@ -27,7 +27,7 @@ import { onCloseModal, onOpenModal } from '../store/adminSlice';
 
 export const UserModalForm = () => {
   //Store
-  const { roles, active, openModal } = useSelector((state) => state.admin);
+  const { roles, openModal, activeUser } = useSelector((state) => state.admin);
   const dispatch = useDispatch();
 
   const handleClickOpen = () => {
@@ -50,25 +50,25 @@ export const UserModalForm = () => {
     onCheckChange,
     onResetForm,
   } = useForm({
-    userName: active.userName,
+    userName: activeUser.userName,
     password: '',
-    fullName: active.fullName,
-    email: active.email,
-    roleId: active.roleId,
-    status: active.status,
+    fullName: activeUser.fullName,
+    email: activeUser.email,
+    roleId: activeUser.roleId,
+    status: activeUser.status,
   });
 
-  //Active Changed Modify Form
+  //activeUser Changed Modify Form
   React.useEffect(() => {
     setFormState({
-      userName: active.userName,
+      userName: activeUser.userName,
       password: '',
-      fullName: active.fullName,
-      email: active.email,
-      roleId: active.roleId !== undefined ? active.roleId : '',
-      status: active.status === true ? true : false,
+      fullName: activeUser.fullName,
+      email: activeUser.email,
+      roleId: activeUser.roleId !== undefined ? activeUser.roleId : '',
+      status: activeUser.status === true ? true : false,
     });
-  }, [active]);
+  }, [activeUser]);
 
   //Events Object
   const eventsLibrary = {
@@ -82,7 +82,7 @@ export const UserModalForm = () => {
       dispatch(onCloseModal());
       await dispatch(
         startUpdateUser({
-          id: active.id,
+          id: activeUser.id,
           userName,
           fullName,
           email,
@@ -124,7 +124,7 @@ export const UserModalForm = () => {
             </Grid>
 
             {/*Conditional Rendering */}
-            {Object.keys(active).length === 0 && (
+            {Object.keys(activeUser).length === 0 && (
               <Grid item sm={12} md={6}>
                 <TextField
                   id="password"
@@ -173,7 +173,7 @@ export const UserModalForm = () => {
                   id="roleId"
                   name="roleId"
                   value={roleId}
-                  defaultValue={active.roleId}
+                  defaultValue={activeUser.roleId}
                   onChange={onInputChange}
                 >
                   <MenuItem value="">
@@ -219,7 +219,7 @@ export const UserModalForm = () => {
           </Button>
           <Button
             onClick={
-              Object.keys(active).length === 0
+              Object.keys(activeUser).length === 0
                 ? eventsLibrary['add']
                 : eventsLibrary['edit']
             }
@@ -228,7 +228,7 @@ export const UserModalForm = () => {
             endIcon={<Save />}
             sx={{ width: '100%' }}
           >
-            {Object.keys(active).length === 0 ? 'Save' : 'Update'}
+            {Object.keys(activeUser).length === 0 ? 'Save' : 'Update'}
           </Button>
         </DialogActions>
       </Dialog>

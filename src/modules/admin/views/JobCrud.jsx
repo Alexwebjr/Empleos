@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { startDeleteJob, startLoadingJobs } from '../store/thunks';
+import { onActiveJob, onOpenModal } from '../store/adminSlice';
 import { JobModalForm } from '../components/JobModalForm';
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
@@ -155,7 +156,10 @@ export const JobCrud = () => {
       type: 'actions',
       width: 100,
       getActions: (params) => [
-        <EditIcon />,
+        <EditIcon
+          style={{ cursor: 'pointer' }}
+          onClick={() => onEdit(params.row)}
+        />,
         <DeleteIcon
           style={{ cursor: 'pointer' }}
           onClick={() => onDelete(params.row.id)}
@@ -170,6 +174,33 @@ export const JobCrud = () => {
 
   const handleChange = (event) => {
     setRole(event.target.value);
+  };
+
+  const onEdit = async (job) => {
+    const {
+      id,
+      title,
+      summary,
+      description,
+      requirement,
+      salary,
+      image,
+      status,
+    } = job;
+    //console.log(userId);
+    dispatch(
+      onActiveJob({
+        id,
+        title,
+        summary,
+        description,
+        requirement,
+        salary,
+        image,
+        status,
+      })
+    );
+    dispatch(onOpenModal());
   };
 
   const onDelete = async (jobIs) => {

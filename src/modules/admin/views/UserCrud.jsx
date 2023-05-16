@@ -118,7 +118,6 @@ export const UserCrud = () => {
         status,
       })
     );
-    //TODO: Open Modal
     dispatch(onOpenModal());
   };
 

@@ -23,13 +23,13 @@ import {
   IconButton,
 } from '@mui/material';
 import { Cancel, Save } from '@mui/icons-material';
-import { startAddJob, startUpdateUser } from '../store/thunks';
+import { startAddJob, startUpdateJob } from '../store/thunks';
 import { onCloseModal, onOpenModal } from '../store/adminSlice';
 import { GridCloseIcon } from '@mui/x-data-grid';
 
 export const JobModalForm = () => {
   //Store
-  const { active, openModal } = useSelector((state) => state.admin);
+  const { activeJob, openModal } = useSelector((state) => state.admin);
   const [selectedImage, setSelectedImage] = React.useState(null);
   const [isImageSelected, setIsImageSelected] = React.useState(false);
   const dispatch = useDispatch();
@@ -67,27 +67,27 @@ export const JobModalForm = () => {
     onCheckChange,
     onResetForm,
   } = useForm({
-    title: '',
-    summary: '',
-    description: '',
-    requirement: '',
-    salary: '',
-    image: '',
-    status: false,
+    title: activeJob.title,
+    summary: activeJob.summary,
+    description: activeJob.description,
+    requirement: activeJob.requirement,
+    salary: activeJob.salary,
+    image: activeJob.image,
+    status: activeJob.status,
   });
 
-  //Active Changed Modify Form
+  //activeJob Changed Modify Form
   React.useEffect(() => {
     setFormState({
-      title: '',
-      summary: '',
-      description: '',
-      requirement: '',
-      salary: '',
-      image: '',
-      status: false,
+      title: activeJob.title,
+      summary: activeJob.summary,
+      description: activeJob.description,
+      requirement: activeJob.requirement,
+      salary: activeJob.salary,
+      image: activeJob.image,
+      status: activeJob.status === true ? true : false,
     });
-  }, [active]);
+  }, [activeJob]);
 
   //Events Object
   const eventsLibrary = {
@@ -108,12 +108,14 @@ export const JobModalForm = () => {
     edit: async () => {
       dispatch(onCloseModal());
       await dispatch(
-        startUpdateUser({
-          id: active.id,
-          userName,
-          fullName,
-          email,
-          roleId,
+        startUpdateJob({
+          id: activeJob.id,
+          title,
+          summary,
+          description,
+          requirement,
+          salary,
+          image,
           status,
         })
       );
@@ -134,7 +136,7 @@ export const JobModalForm = () => {
         ADD NEW
       </Button>
       <Dialog open={openModal} onClose={handleClose}>
-        <DialogTitle>ADD NEW JOB</DialogTitle>
+        <DialogTitle>JOB MODAL FORM</DialogTitle>
         <DialogContent>
           <DialogContentText></DialogContentText>
           {/*FORM */}
@@ -268,7 +270,7 @@ export const JobModalForm = () => {
           </Button>
           <Button
             onClick={
-              Object.keys(active).length === 0
+              Object.keys(activeJob).length === 0
                 ? eventsLibrary['add']
                 : eventsLibrary['edit']
             }
@@ -277,7 +279,7 @@ export const JobModalForm = () => {
             endIcon={<Save />}
             sx={{ width: '100%' }}
           >
-            {Object.keys(active).length === 0 ? 'Save' : 'Update'}
+            {Object.keys(activeJob).length === 0 ? 'Save' : 'Update'}
           </Button>
         </DialogActions>
       </Dialog>
