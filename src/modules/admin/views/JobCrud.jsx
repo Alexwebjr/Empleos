@@ -216,27 +216,29 @@ export const JobCrud = () => {
   };
 
   return (
-    <Box sx={{ height: 400, width: '100%' }}>
-      {/*TITLE */}
-      <Typography variant="h2" gutterBottom>
-        Jobs
-      </Typography>
-      {/*MODAL FORM*/}
-      <Grid item textAlign="end" paddingRight={3} paddingBottom={3}>
-        <JobModalForm />
-      </Grid>
-      {/*DATA GRID */}
-      <DataGrid
-        rows={jobs}
-        columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-        disableSelectionOnClick
-        experimentalFeatures={{ newEditingApi: true }}
-        onRowClick={handleRowClick}
-      />
+    <>
+      <Box sx={{ height: 400, width: '100%' }}>
+        {/*TITLE */}
+        <Typography variant="h2" gutterBottom>
+          Jobs
+        </Typography>
+        {/*MODAL FORM*/}
+        <Grid item textAlign="end" paddingRight={3} paddingBottom={3}>
+          <JobModalForm />
+        </Grid>
+        {/*DATA GRID */}
+        <DataGrid
+          rows={jobs}
+          columns={columns}
+          pageSize={5}
+          rowsPerPageOptions={[5]}
+          disableSelectionOnClick
+          experimentalFeatures={{ newEditingApi: true }}
+          onRowClick={handleRowClick}
+        />
 
-      {message && <Alert severity="info">{message}</Alert>}
-    </Box>
+        {message && <Alert severity="info">{message}</Alert>}
+      </Box>
+    </>
   );
 };

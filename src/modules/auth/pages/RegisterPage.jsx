@@ -46,71 +46,73 @@ export const RegisterPage = () => {
   };
 
   return (
-    <AuthLayout title="Registro">
-      <form onSubmit={onSubmit}>
-        <Grid container>
-          <Grid item xs={12} sx={{ mt: 2 }}>
-            <TextField
-              label="Nombre Completo"
-              type="text"
-              name="fullName"
-              value={fullName}
-              onChange={onInputChange}
-              error={!!fullNameValid && formSubmitted}
-              helperText={fullNameValid}
-              fullWidth
-            />
-          </Grid>
-
-          <Grid item xs={12} sx={{ mt: 2 }}>
-            <TextField
-              label="Correo"
-              type="email"
-              name="email"
-              value={email}
-              onChange={onInputChange}
-              error={!!emailValid && formSubmitted}
-              helperText={emailValid}
-              fullWidth
-            />
-          </Grid>
-
-          <Grid item xs={12} sx={{ mt: 2 }}>
-            <TextField
-              label="Password"
-              type="password"
-              name="password"
-              value={password}
-              onChange={onInputChange}
-              error={!!passwordValid && formSubmitted}
-              helperText={passwordValid}
-              fullWidth
-            />
-          </Grid>
-
-          <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
-            <Grid item xs={12} sm={6}>
-              <Button type="submit" variant="contained" fullWidth>
-                Create
-              </Button>
+    <>
+      <AuthLayout title="Registro">
+        <form onSubmit={onSubmit}>
+          <Grid container>
+            <Grid item xs={12} sx={{ mt: 2 }}>
+              <TextField
+                label="Nombre Completo"
+                type="text"
+                name="fullName"
+                value={fullName}
+                onChange={onInputChange}
+                error={!!fullNameValid && formSubmitted}
+                helperText={fullNameValid}
+                fullWidth
+              />
             </Grid>
 
-            <Grid item xs={12} sm={6}>
-              <Button variant="contained" fullWidth>
-                <Google />
-                <Typography sx={{ ml: 1 }}>Google</Typography>
-              </Button>
+            <Grid item xs={12} sx={{ mt: 2 }}>
+              <TextField
+                label="Correo"
+                type="email"
+                name="email"
+                value={email}
+                onChange={onInputChange}
+                error={!!emailValid && formSubmitted}
+                helperText={emailValid}
+                fullWidth
+              />
+            </Grid>
+
+            <Grid item xs={12} sx={{ mt: 2 }}>
+              <TextField
+                label="Password"
+                type="password"
+                name="password"
+                value={password}
+                onChange={onInputChange}
+                error={!!passwordValid && formSubmitted}
+                helperText={passwordValid}
+                fullWidth
+              />
+            </Grid>
+
+            <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
+              <Grid item xs={12} sm={6}>
+                <Button type="submit" variant="contained" fullWidth>
+                  Create
+                </Button>
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <Button variant="contained" fullWidth>
+                  <Google />
+                  <Typography sx={{ ml: 1 }}>Google</Typography>
+                </Button>
+              </Grid>
+            </Grid>
+
+            <Grid container direction="row" justifyContent="end">
+              <Typography sx={{ mr: 1 }}> ¿Ya tienes una cuenta?</Typography>
+              <Link component={RouterLink} color="inherit" to="/auth/login">
+                Ingresar
+              </Link>
             </Grid>
           </Grid>
-
-          <Grid container direction="row" justifyContent="end">
-            <Typography sx={{ mr: 1 }}> ¿Ya tienes una cuenta?</Typography>
-            <Link component={RouterLink} color="inherit" to="/auth/login">
-              Ingresar
-            </Link>
-          </Grid>
-        </Grid>
-      </form>
-    </AuthLayout>
+        </form>
+      </AuthLayout>
+    </>
   );
 };

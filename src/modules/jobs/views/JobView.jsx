@@ -7,8 +7,16 @@ export const JobView = () => {
   const { active } = useSelector((state) => state.job);
 
   if (active) {
-    return <JobViewDetails job={active} />;
+    return (
+      <>
+        <JobViewDetails job={active} />
+      </>
+    );
   } else {
-    return <NotActiveJob />;
+    return (
+      <>
+        <NotActiveJob />
+      </>
+    );
   }
 };

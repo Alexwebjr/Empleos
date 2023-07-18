@@ -102,7 +102,7 @@ export const UserModalForm = () => {
   };
 
   return (
-    <div>
+    <>
       <Button variant="outlined" onClick={handleClickOpen}>
         ADD NEW
       </Button>
@@ -232,6 +232,6 @@ export const UserModalForm = () => {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
   );
 };

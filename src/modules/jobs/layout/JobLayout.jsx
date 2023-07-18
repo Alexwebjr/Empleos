@@ -7,19 +7,21 @@ import { Filter } from '../components/Filter';
 
 export const JobLayout = ({ children }) => {
   return (
-    <Box sx={{ display: 'flex' }}>
-      <Loading />
-      <NavBar />
+    <>
+      <Box sx={{ display: 'flex' }}>
+        <Loading />
+        <NavBar />
 
-      {/*SideBar / Filter */}
-      <SideBar>
-        <Filter />
-      </SideBar>
+        {/*SideBar / Filter */}
+        <SideBar>
+          <Filter />
+        </SideBar>
 
-      <Box component="main" sx={{ flexGrow: 1, p: 0 }}>
-        <Toolbar />
-        {children}
+        <Box component="main" sx={{ flexGrow: 1, p: 0 }}>
+          <Toolbar />
+          {children}
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };

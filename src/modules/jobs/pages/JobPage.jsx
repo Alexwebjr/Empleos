@@ -3,9 +3,11 @@ import { JobView, Default } from '../views';
 
 export const JobPage = () => {
   return (
-    <JobLayout>
-      <JobView />
-      {/* <Default /> */}
-    </JobLayout>
+    <>
+      <JobLayout>
+        <JobView />
+        {/* <Default /> */}
+      </JobLayout>
+    </>
   );
 };

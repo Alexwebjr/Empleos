@@ -131,7 +131,7 @@ export const JobModalForm = () => {
   };
 
   return (
-    <div>
+    <>
       <Button variant="outlined" onClick={handleClickOpen}>
         ADD NEW
       </Button>
@@ -283,6 +283,6 @@ export const JobModalForm = () => {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
   );
 };

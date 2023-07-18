@@ -29,40 +29,42 @@ export const JobListItem = ({ job }) => {
   }, [job.summary]);
 
   return (
-    <ListItem alignItems="flex-start" key={job.id} onClick={onClickJob}>
-      <ListItemAvatar>
-        <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-      </ListItemAvatar>
-      <ListItemText
-        primary={editedTitle}
-        secondary={
-          <React.Fragment>
-            <Typography
-              sx={{ display: 'inline' }}
-              component="span"
-              variant="body2"
-              color="text.primary"
-            >
-              {editedSummary}
-            </Typography>
+    <>
+      <ListItem alignItems="flex-start" key={job.id} onClick={onClickJob}>
+        <ListItemAvatar>
+          <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+        </ListItemAvatar>
+        <ListItemText
+          primary={editedTitle}
+          secondary={
+            <React.Fragment>
+              <Typography
+                sx={{ display: 'inline' }}
+                component="span"
+                variant="body2"
+                color="text.primary"
+              >
+                {editedSummary}
+              </Typography>
 
-            <Grid
-              container
-              spacing={2}
-              component="span"
-              justifyContent="space-between"
-              sx={{ pt: 1 }}
-            >
-              <Grid item xs={6}>
-                ${job.salary}
+              <Grid
+                container
+                spacing={2}
+                component="span"
+                justifyContent="space-between"
+                sx={{ pt: 1 }}
+              >
+                <Grid item xs={6} component="span">
+                  ${job.salary}
+                </Grid>
+                <Grid item xs={6} component="span">
+                  {job.createdAt}
+                </Grid>
               </Grid>
-              <Grid item xs={6}>
-                {job.createdAt}
-              </Grid>
-            </Grid>
-          </React.Fragment>
-        }
-      />
-    </ListItem>
+            </React.Fragment>
+          }
+        />
+      </ListItem>
+    </>
   );
 };

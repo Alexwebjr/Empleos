@@ -22,7 +22,7 @@ export const ModalBox = ({ children, btnText }) => {
   const handleClose = () => setOpen(false);
 
   return (
-    <div>
+    <>
       <Button onClick={handleOpen} variant="contained" color="success">
         {btnText}
       </Button>
@@ -34,6 +34,6 @@ export const ModalBox = ({ children, btnText }) => {
       >
         <Box sx={style}>{children}</Box>
       </Modal>
-    </div>
+    </>
   );
 };

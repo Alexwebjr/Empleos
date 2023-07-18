@@ -18,5 +18,9 @@ export const AdminPage = ({ children }) => {
     }
   }, [errorMessage]);
 
-  return <AdminLayout>{children ? children : <Default />}</AdminLayout>;
+  return (
+    <>
+      <AdminLayout>{children ? children : <Default />}</AdminLayout>
+    </>
+  );
 };
