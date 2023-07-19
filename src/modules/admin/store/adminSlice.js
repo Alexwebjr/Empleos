@@ -85,6 +85,16 @@ export const adminSlice = createSlice({
         text: 'User deleted',
       };
     },
+    onDeleteAd: (state, { payload }) => {
+      //state.users = state.users.filter((x) => x.id != payload.userId);
+      const ind = state.ads.findIndex((x) => x.id == payload);
+      state.ads[ind] = { ...state.ads[ind], status: false };
+      state.errorMessage = {
+        type: 'success',
+        title: 'Ads deleted',
+        text: 'Ads deleted',
+      };
+    },
     onError: (state, { payload }) => {
       state.errorMessage = {
         type: 'error',
@@ -120,6 +130,7 @@ export const {
   onEditJob,
   onDeleteUser,
   onDeleteJob,
+  onDeleteAd,
   onActiveUser,
   onActiveJob,
   onOpenModal,

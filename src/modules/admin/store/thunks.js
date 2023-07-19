@@ -62,6 +62,10 @@ export const startLoadingAds = () => {
       const { data } = await adminApi.get('/ads');
       const ads = data.data.data;
 
+      ads.forEach((u) => {
+        u.userName = u.user?.userName;
+      });
+
       dispatch(onLoadAds({ ads }));
     } catch (error) {
       dispatch(onError(error.message));
@@ -185,6 +189,26 @@ export const startDeleteJob = (jobId) => {
 
       if (response.status == 'success') {
         dispatch(onDeleteJob(jobId));
+      }
+    } catch (error) {
+      dispatch(onError(error.message));
+    }
+    dispatch(onLoading(false));
+  };
+};
+
+export const startDeleteAd = (adId) => {
+  return async (dispatch) => {
+    try {
+      dispatch(onLoading(true));
+
+      //Update state
+      const { data: response } = await adminApi.patch('/ads/' + adId, {
+        status: false,
+      });
+
+      if (response.status == 'success') {
+        dispatch(onDeleteAd(adId));
       }
     } catch (error) {
       dispatch(onError(error.message));

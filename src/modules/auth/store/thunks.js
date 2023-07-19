@@ -11,15 +11,24 @@ export const startCheking = () => {
   return async (dispatch) => {
     dispatch(onCheckingCredentials());
 
-    //const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
+    const tDate = localStorage.getItem('token-init-date');
+    const tDateNumber = parseInt(tDate);
+
+    if (tDateNumber && tDateNumber > currentTime) {
+      //Verify token
+      console.log('vigente');
+    }
   };
 };
 
 export const startLogin = (email, password) => {
   return async (dispatch) => {
     try {
-      //console.log(email, password);
+      //startCheking();
+
       dispatch(onLoading(true));
+
       const { data } = await jobApi.post('/auth/login', { email, password });
 
       if (data.status == 'success') {

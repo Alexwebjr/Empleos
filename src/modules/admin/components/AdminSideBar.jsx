@@ -39,7 +39,7 @@ export const AdminSideBar = () => {
               </ListItemButton>
             </ListItem>
           </Link>
-          <Link to="/admin/adds">
+          <Link to="/admin/ads">
             <ListItem key="Adds" disablePadding>
               <ListItemButton>
                 <ListItemIcon>
