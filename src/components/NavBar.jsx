@@ -152,7 +152,10 @@ export const NavBar = () => {
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt={userName} src="/static/images/avatar/2.jpg" />
+                    <Avatar
+                      alt={userName}
+                      src="https://res.cloudinary.com/dczjxgeyn/image/upload/v1691424735/empleos/itireux25wahtnt1jsbl.png"
+                    />
                   </IconButton>
                 </Tooltip>
                 <Menu

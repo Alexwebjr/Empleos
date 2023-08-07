@@ -59,4 +59,4 @@ exports.updateUser = catchAsync(async (req, res, next) => {
 });
 
 //DELATE
-exports.deleUser = crudHelper.deleteOne(User);
+exports.deleteUser = crudHelper.deleteOne(User);

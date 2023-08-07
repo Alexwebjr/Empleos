@@ -9,7 +9,7 @@ export const adminSlice = createSlice({
     ads: [],
     activeUser: {},
     activeJob: {},
-    activeAdd: {},
+    activeAd: {},
     openModal: false,
     errorMessage: undefined,
   },
@@ -33,10 +33,12 @@ export const adminSlice = createSlice({
       state.users.push(payload.user);
     },
     onSaveJob: (state, { payload }) => {
-      state.users.push(payload.job);
+      state.jobs.push(payload.job);
     },
-    onSaveAdd: (state, { payload }) => {
-      state.users.push(payload.add);
+    onSaveAd: (state, { payload }) => {
+      const user = state.users.findIndex((x) => x.id == payload.userId);
+      let newAd = { ...payload.ad, user };
+      state.ads.push(newAd);
     },
     onActiveUser: (state, { payload }) => {
       state.activeUser = payload;
@@ -44,8 +46,8 @@ export const adminSlice = createSlice({
     onActiveJob: (state, { payload }) => {
       state.activeJob = payload;
     },
-    onActiveAdd: (state, { payload }) => {
-      state.activeAdd = payload;
+    onActiveAd: (state, { payload }) => {
+      state.activeAd = payload;
     },
     onEditUser: (state, { payload }) => {
       const ind = state.users.findIndex((x) => x.id == payload.id);
@@ -63,6 +65,16 @@ export const adminSlice = createSlice({
         type: 'success',
         title: 'Job edited',
         text: 'Job modify',
+      };
+    },
+    onEditAd: (state, { payload }) => {
+      const ind = state.ads.findIndex((x) => x.id == payload.id);
+      const userName = state.users.findIndex((x) => x.id == payload.userId);
+      state.ads[ind] = { ...payload, userName };
+      state.errorMessage = {
+        type: 'success',
+        title: 'Ad edited',
+        text: 'Ad modify',
       };
     },
     onDeleteJob: (state, { payload }) => {
@@ -86,7 +98,6 @@ export const adminSlice = createSlice({
       };
     },
     onDeleteAd: (state, { payload }) => {
-      //state.users = state.users.filter((x) => x.id != payload.userId);
       const ind = state.ads.findIndex((x) => x.id == payload);
       state.ads[ind] = { ...state.ads[ind], status: false };
       state.errorMessage = {
@@ -111,7 +122,7 @@ export const adminSlice = createSlice({
     onCloseModal: (state) => {
       state.activeUser = {};
       state.activeJob = {};
-      state.activeAdd = {};
+      state.activeAd = {};
       state.openModal = false;
     },
   },
@@ -125,7 +136,7 @@ export const {
   onError,
   onSaveUser,
   onSaveJob,
-  onSaveAdd,
+  onSaveAd,
   onEditUser,
   onEditJob,
   onDeleteUser,
@@ -133,6 +144,7 @@ export const {
   onDeleteAd,
   onActiveUser,
   onActiveJob,
+  onActiveAd,
   onOpenModal,
   onCloseModal,
   onClearErrorMessage,

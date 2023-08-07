@@ -27,7 +27,25 @@ exports.getAllAds = catchAsync(async (req, res, next) => {
 exports.getAd = crudHelper.getOne(Ad);
 
 //UPDATE
-exports.updateAd = crudHelper.updateOne(Ad);
+exports.updateAd = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+
+  let doc = await Ad.findOne({ where: { id }, include: User });
+
+  if (!doc) {
+    return next(new AppError('Please provide a valid id', 400));
+  }
+
+  doc.set(req.body);
+  const newDoc = await doc.save();
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      data: newDoc,
+    },
+  });
+});
 
 //DELATE
 exports.deleteAd = crudHelper.deleteOne(Ad);

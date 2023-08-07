@@ -4,6 +4,7 @@ import { onLoading } from '../../auth/store';
 import {
   onDeleteJob,
   onDeleteUser,
+  onDeleteAd,
   onEditUser,
   onEditJob,
   onError,
@@ -12,6 +13,7 @@ import {
   onLoadUsers,
   onSaveJob,
   onSaveUser,
+  onSaveAd,
 } from './adminSlice';
 
 const setRoleName = (user) => {
@@ -108,6 +110,22 @@ export const startAddJob = (newJob) => {
   };
 };
 
+export const startAddAd = (newAd) => {
+  return async (dispatch) => {
+    try {
+      dispatch(onLoading(true));
+      const { data: response } = await adminApi.post('/ads', newAd);
+      if (response.status == 'success') {
+        const ad = response.data.data;
+        dispatch(onSaveAd({ ad }));
+      }
+    } catch (error) {
+      dispatch(onError(error.message));
+    }
+    dispatch(onLoading(false));
+  };
+};
+
 //UPDATE
 export const startUpdateUser = (userOld) => {
   return async (dispatch) => {
@@ -146,6 +164,26 @@ export const startUpdateJob = (jobOld) => {
       if (response.status == 'success') {
         const job = convertDateFormat([response.data.data])[0];
         dispatch(onEditJob(job));
+      }
+    } catch (error) {
+      dispatch(onError(error.response.data.message));
+    }
+    dispatch(onLoading(false));
+  };
+};
+
+export const startUpdateAd = (adOld) => {
+  return async (dispatch) => {
+    try {
+      dispatch(onLoading(true));
+      const { data: response } = await adminApi.patch(
+        '/ads/' + adOld.id,
+        adOld
+      );
+
+      if (response.status == 'success') {
+        const ad = convertDateFormat([response.data.data])[0];
+        dispatch(onEditAd(ad));
       }
     } catch (error) {
       dispatch(onError(error.response.data.message));

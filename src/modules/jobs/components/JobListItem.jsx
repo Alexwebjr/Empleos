@@ -32,7 +32,10 @@ export const JobListItem = ({ job }) => {
     <>
       <ListItem alignItems="flex-start" key={job.id} onClick={onClickJob}>
         <ListItemAvatar>
-          <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+          <Avatar
+            alt="Remy Sharp"
+            src="https://res.cloudinary.com/dczjxgeyn/image/upload/v1691424253/empleos/uohymwmrzmgnr0orydyl.png"
+          />
         </ListItemAvatar>
         <ListItemText
           primary={editedTitle}

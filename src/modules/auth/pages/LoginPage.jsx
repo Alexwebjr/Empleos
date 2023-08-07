@@ -32,7 +32,7 @@ export const LoginPage = () => {
   }, [errorMessage]);
 
   const { email, password, onInputChange, onResetForm } = useForm({
-    email: 'test@email.com',
+    email: 'admin@email.com',
     password: '12345678',
   });
 
