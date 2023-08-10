@@ -9,7 +9,7 @@ export const jobSlice = createSlice({
   },
   reducers: {
     onLoad: (state, { payload }) => {
-      state.jobs = payload.jobs;
+      state.jobs = payload.jobs.filter((x) => x.status == true);
     },
     onActiveJob: (state, { payload }) => {
       state.active = payload;

@@ -24,7 +24,7 @@ export const adminSlice = createSlice({
       state.roles = payload.roles;
     },
     onLoadJobs: (state, { payload }) => {
-      state.jobs = payload.jobs;
+      state.jobs = payload.jobs.filter((x) => x.status == true);
     },
     onLoadAds: (state, { payload }) => {
       state.ads = payload.ads;
@@ -79,8 +79,7 @@ export const adminSlice = createSlice({
     },
     onDeleteJob: (state, { payload }) => {
       //state.users = state.users.filter((x) => x.id != payload.userId);
-      const ind = state.jobs.findIndex((x) => x.id == payload);
-      state.jobs[ind] = { ...state.jobs[ind], status: false };
+      state.jobs = state.jobs.filter((x) => x.id != payload);
       state.errorMessage = {
         type: 'success',
         title: 'Job deleted',
