@@ -23,14 +23,18 @@ import {
   IconButton,
 } from '@mui/material';
 import { Cancel, Save } from '@mui/icons-material';
-import { startAddJob, startUpdateJob } from '../store/thunks';
+import {
+  startAddJob,
+  startUpdateJob,
+  startUploadingFile,
+} from '../store/thunks';
 import { onCloseModal, onOpenModal } from '../store/adminSlice';
 import { GridCloseIcon } from '@mui/x-data-grid';
 
 export const JobModalForm = () => {
   //Store
   const { activeJob, openModal } = useSelector((state) => state.admin);
-  const [selectedImage, setSelectedImage] = React.useState(null);
+  const [selectedImages, setSelectedImages] = React.useState([]);
   const [isImageSelected, setIsImageSelected] = React.useState(false);
   const dispatch = useDispatch();
 
@@ -42,8 +46,12 @@ export const JobModalForm = () => {
     dispatch(onCloseModal());
   };
 
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
+  const handleImageUpload = ({ target }) => {
+    //save state selectedImage
+    setSelectedImages(target.files);
+
+    //show image in form
+    const file = target.files[0];
     handleImageChange(URL.createObjectURL(file));
   };
 
@@ -93,6 +101,9 @@ export const JobModalForm = () => {
   const eventsLibrary = {
     add: async (event) => {
       event.preventDefault();
+      //Send to cloud
+      let imageUrl = await dispatch(startUploadingFile(selectedImages));
+      //Save JOb
       await dispatch(
         startAddJob({
           title,
@@ -100,7 +111,7 @@ export const JobModalForm = () => {
           description,
           requirement,
           salary,
-          image,
+          image: imageUrl,
           status,
         })
       );

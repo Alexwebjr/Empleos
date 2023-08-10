@@ -1,5 +1,5 @@
 import { adminApi } from '../../../api/';
-import { convertDateFormat } from '../../../helpers';
+import { convertDateFormat, fileUpload } from '../../../helpers';
 import { onLoading } from '../../auth/store';
 import {
   onDeleteJob,
@@ -252,5 +252,18 @@ export const startDeleteAd = (adId) => {
       dispatch(onError(error.message));
     }
     dispatch(onLoading(false));
+  };
+};
+
+//UPLOAD
+export const startUploadingFile = (files = []) => {
+  return async (dispatch) => {
+    try {
+      //dispatch(onLoading(true));
+      const imgUrl = await fileUpload(files[0]); //just 1
+      return imgUrl;
+    } catch (error) {
+      console.log({ error });
+    }
   };
 };

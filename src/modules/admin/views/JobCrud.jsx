@@ -19,7 +19,10 @@ import {
   Select,
   TextField,
 } from '@mui/material';
-import { sweetAlert } from '../../../helpers';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+const MySwal = withReactContent(Swal);
+import { sweetAlert } from '../../../helpers/sweetAlert';
 
 const rows = [
   {
@@ -131,6 +134,12 @@ export const JobCrud = () => {
     {
       field: 'salary',
       headerName: 'Salary',
+      width: 150,
+      editable: false,
+    },
+    {
+      field: 'image',
+      headerName: 'Image',
       width: 150,
       editable: false,
     },
