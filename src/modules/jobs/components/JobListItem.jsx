@@ -34,7 +34,10 @@ export const JobListItem = ({ job }) => {
         <ListItemAvatar>
           <Avatar
             alt="Remy Sharp"
-            src="https://res.cloudinary.com/dczjxgeyn/image/upload/v1691424253/empleos/uohymwmrzmgnr0orydyl.png"
+            src={
+              job.image ||
+              'https://res.cloudinary.com/dczjxgeyn/image/upload/v1691424253/empleos/uohymwmrzmgnr0orydyl.png'
+            }
           />
         </ListItemAvatar>
         <ListItemText
