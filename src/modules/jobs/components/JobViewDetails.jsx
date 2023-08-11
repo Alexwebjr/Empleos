@@ -31,7 +31,10 @@ export const JobViewDetails = ({ job }) => {
         {/*IMAGEN */}
         <Grid item sm={12} minWidth="100%" padding={0}>
           <Image
-            src="https://images.pexels.com/photos/140945/pexels-photo-140945.jpeg"
+            src={
+              job.image ||
+              'https://images.pexels.com/photos/140945/pexels-photo-140945.jpeg'
+            }
             height="20vh"
             width="100%"
             fit="cover"

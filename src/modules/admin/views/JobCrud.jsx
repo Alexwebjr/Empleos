@@ -18,6 +18,7 @@ import {
   MenuItem,
   Select,
   TextField,
+  Avatar,
 } from '@mui/material';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
@@ -142,6 +143,7 @@ export const JobCrud = () => {
       headerName: 'Image',
       width: 150,
       editable: false,
+      renderCell: (params) => <Avatar src={params.value} />,
     },
     {
       field: 'createdAt',
