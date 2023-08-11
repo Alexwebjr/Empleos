@@ -102,7 +102,12 @@ export const JobModalForm = () => {
     add: async (event) => {
       event.preventDefault();
       //Send to cloud
-      let imageUrl = await dispatch(startUploadingFile(selectedImages));
+      let imageUrl =
+        selectedImages.length !== 0
+          ? await dispatch(startUploadingFile(selectedImages))
+          : image;
+      setSelectedImages([]);
+
       //Save JOb
       await dispatch(
         startAddJob({
@@ -118,6 +123,15 @@ export const JobModalForm = () => {
     },
     edit: async () => {
       dispatch(onCloseModal());
+
+      //Send to cloud
+      let imageUrl =
+        selectedImages.length !== 0
+          ? await dispatch(startUploadingFile(selectedImages))
+          : image;
+      setSelectedImages([]);
+
+      //Update Job
       await dispatch(
         startUpdateJob({
           id: activeJob.id,
@@ -126,7 +140,7 @@ export const JobModalForm = () => {
           description,
           requirement,
           salary,
-          image,
+          image: imageUrl,
           status,
         })
       );
@@ -170,11 +184,17 @@ export const JobModalForm = () => {
                   >
                     <GridCloseIcon />
                   </IconButton>
-                  <img
-                    src={image}
-                    alt="Selected file"
-                    style={{ maxWidth: '100%' }}
-                  />
+                  <Grid container justifyContent="center">
+                    <Avatar
+                      src={image}
+                      alt="Selected file"
+                      style={{
+                        maxWidth: '100%',
+                        width: '300px',
+                        height: '300px',
+                      }}
+                    />
+                  </Grid>
                 </div>
               )}
               <Grid container justifyContent="flex-end">

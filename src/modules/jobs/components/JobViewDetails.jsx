@@ -92,10 +92,7 @@ export const JobViewDetails = ({ job }) => {
               >
                 <ListItem>
                   <ListItemAvatar>
-                    <Avatar
-                      alt="Remy Sharp"
-                      src="https://res.cloudinary.com/dczjxgeyn/image/upload/v1691424735/empleos/itireux25wahtnt1jsbl.png"
-                    />
+                    <Avatar alt="Remy Sharp" src="https://i.pravatar.cc/43" />
                   </ListItemAvatar>
                   <ListItemText
                     primary="Ana Thompson"

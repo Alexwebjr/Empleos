@@ -16,7 +16,7 @@ import withReactContent from 'sweetalert2-react-content';
 const MySwal = withReactContent(Swal);
 import { sweetAlert } from '../../../helpers/sweetAlert';
 
-import { Alert, Grid, Typography } from '@mui/material';
+import { Alert, Avatar, Grid, Typography } from '@mui/material';
 
 //Users demo
 const rows = [
@@ -52,6 +52,13 @@ export const UserCrud = () => {
       headerName: '#',
       width: 60,
       editable: false,
+    },
+    {
+      field: 'image',
+      headerName: 'Image',
+      width: 150,
+      editable: false,
+      renderCell: (params) => <Avatar src={params.value} />,
     },
     {
       field: 'userName',
@@ -103,8 +110,17 @@ export const UserCrud = () => {
   ];
 
   const onEdit = async (user) => {
-    const { id, userName, fullName, email, role, roleId, roleName, status } =
-      user;
+    const {
+      id,
+      userName,
+      fullName,
+      email,
+      role,
+      roleId,
+      roleName,
+      image,
+      status,
+    } = user;
     //console.log(userId);
     dispatch(
       onActiveUser({
@@ -115,6 +131,7 @@ export const UserCrud = () => {
         role,
         roleId,
         roleName,
+        image,
         status,
       })
     );

@@ -20,14 +20,22 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  IconButton,
+  Avatar,
 } from '@mui/material';
 import { Cancel, Save } from '@mui/icons-material';
-import { startAddUser, startUpdateUser } from '../store/thunks';
+import {
+  startAddUser,
+  startUpdateUser,
+  startUploadingFile,
+} from '../store/thunks';
 import { onCloseModal, onOpenModal } from '../store/adminSlice';
+import { GridCloseIcon } from '@mui/x-data-grid';
 
 export const UserModalForm = () => {
   //Store
   const { roles, openModal, activeUser } = useSelector((state) => state.admin);
+  const [selectedImages, setSelectedImages] = React.useState([]);
   const dispatch = useDispatch();
 
   const handleClickOpen = () => {
@@ -37,6 +45,22 @@ export const UserModalForm = () => {
   const handleClose = () => {
     dispatch(onCloseModal());
   };
+
+  const handleImageUpload = ({ target }) => {
+    //save state selectedImage
+    setSelectedImages(target.files);
+
+    //show image in form
+    const file = target.files[0];
+    handleImageChange(URL.createObjectURL(file));
+  };
+
+  const handleImageChange = (newUrl) => {
+    onInputChange({
+      target: { name: 'image', value: newUrl },
+    });
+  };
+
   //Form
   const {
     userName,
@@ -44,6 +68,7 @@ export const UserModalForm = () => {
     fullName,
     email,
     roleId,
+    image,
     status,
     setFormState,
     onInputChange,
@@ -55,6 +80,7 @@ export const UserModalForm = () => {
     fullName: activeUser.fullName,
     email: activeUser.email,
     roleId: activeUser.roleId,
+    image: activeUser.image,
     status: activeUser.status,
   });
 
@@ -66,6 +92,7 @@ export const UserModalForm = () => {
       fullName: activeUser.fullName,
       email: activeUser.email,
       roleId: activeUser.roleId !== undefined ? activeUser.roleId : '',
+      image: activeUser.image,
       status: activeUser.status === true ? true : false,
     });
   }, [activeUser]);
@@ -74,12 +101,38 @@ export const UserModalForm = () => {
   const eventsLibrary = {
     add: async (event) => {
       event.preventDefault();
+
+      //Send to cloud
+      let imageUrl =
+        selectedImages.length !== 0
+          ? await dispatch(startUploadingFile(selectedImages))
+          : image;
+      setSelectedImages([]);
+
+      //Save User
       await dispatch(
-        startAddUser({ userName, password, fullName, email, roleId, status })
+        startAddUser({
+          userName,
+          password,
+          fullName,
+          email,
+          roleId,
+          image: imageUrl,
+          status,
+        })
       );
     },
     edit: async () => {
       dispatch(onCloseModal());
+
+      //Send to cloud
+      let imageUrl =
+        selectedImages.length !== 0
+          ? await dispatch(startUploadingFile(selectedImages))
+          : image;
+      setSelectedImages([]);
+
+      //Update User
       await dispatch(
         startUpdateUser({
           id: activeUser.id,
@@ -87,6 +140,7 @@ export const UserModalForm = () => {
           fullName,
           email,
           roleId,
+          image: imageUrl,
           status,
         })
       );
@@ -112,6 +166,44 @@ export const UserModalForm = () => {
           <DialogContentText></DialogContentText>
           {/*FORM */}
           <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
+            {/*Image */}
+            <Grid item sm={12} justifyContent="center">
+              {/*Show Image */}
+              {image && (
+                <div style={{ position: 'relative' }}>
+                  <IconButton
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      right: 0,
+                      zIndex: 1,
+                    }}
+                    onClick={() => {
+                      handleImageChange(null);
+                    }}
+                  >
+                    <GridCloseIcon />
+                  </IconButton>
+                  <Grid container justifyContent="center">
+                    <Avatar
+                      src={image}
+                      alt="Selected file"
+                      style={{
+                        maxWidth: '100%',
+                        width: '300px',
+                        height: '300px',
+                      }}
+                    />
+                  </Grid>
+                </div>
+              )}
+              <Grid container justifyContent="flex-end">
+                <Button variant="contained" component="label">
+                  Upload File
+                  <input type="file" hidden onChange={handleImageUpload} />
+                </Button>
+              </Grid>
+            </Grid>
             <Grid item sm={12} md={6}>
               <TextField
                 id="userName"
